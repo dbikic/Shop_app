@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+    Copyright (C) 2014 Gimbal, Inc. All rights reserved.
+
+    This software is the confidential and proprietary information of Gimbal, Inc.
+
+    The following sample code illustrates various aspects of the Gimbal SDK.
+
+    The sample code herein is provided for your convenience, and has not been
+    tested or designed to work on any particular system configuration. It is
+    provided AS IS and your use of this sample code, whether as provided or
+    with any modification, is at your own risk. Neither Gimbal, Inc.
+    nor any affiliate takes any liability nor responsibility with respect
+    to the sample code, and disclaims all warranties, express and
+    implied, including without limitation warranties on merchantability,
+    fitness for a specified purpose, and against infringement.
+
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="pref_place_monitoring"
+        android:title="@string/action_place_monitoring"
+        android:defaultValue="false" />
+    <Preference
+        android:key="pref_reset_app_instance_id"
+        android:title="@string/action_reset_app_instance_id" />
+</PreferenceScreen>
