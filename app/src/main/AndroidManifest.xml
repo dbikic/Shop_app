@@ -22,23 +22,41 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-
-
             </intent-filter>
         </activity>
         <activity
             android:name=".BeaconActivity"
-            android:label="@string/title_activity_beacon"
-            android:parentActivityName=".MainActivity" >
+            android:label="@string/title_activity_beacon" >
+
+
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="dino"
+                    android:pathPrefix="/config"
+                    android:scheme="dinonfc" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ShoppingActivity"
+            android:label="@string/title_activity_shopping"
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dinotest.dinogimbaltest.MainActivity" />
+
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="dinonfc"
+
+                <data
                     android:host="dino"
-                    android:pathPrefix="/shop" />
+                    android:pathPrefix="/shop"
+                    android:scheme="dinonfc" />
             </intent-filter>
         </activity>
     </application>

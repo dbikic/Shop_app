@@ -3,5 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_beacon">BeaconActivity</string>
+    <string name="title_activity_beacon">Set RSSI</string>
+    <string name="seekLbl">RSSI: </string>
+    <string name="title_activity_shopping">shoppingActivity</string>
 </resources>

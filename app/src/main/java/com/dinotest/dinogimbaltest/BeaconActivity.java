@@ -1,11 +1,14 @@
 package com.dinotest.dinogimbaltest;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,11 +32,17 @@ import java.util.List;
 
 public class BeaconActivity extends Activity {
 
-    private TextView txtShop, txtBeaconInfo;
+    private TextView txtBeaconInfo, txtRssi;
+    private SeekBar sbProgres;
     private BeaconEventListener moj_listener;
     private BeaconManager manager;
     private PlaceEventListener placeEventListener;
     private CommunicationListener communicationListener;
+    private Integer rssi, ulazak = 0;
+
+    private final String rssiKey = "rssiKey";
+
+    SharedPreferences sharedpreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +50,23 @@ public class BeaconActivity extends Activity {
         setContentView(R.layout.activity_beacon);
 
         Gimbal.setApiKey(this.getApplication(), "b004f8c0-d82f-4809-8b0c-a3698e0b8d79");
-        //Toast.makeText(getApplication(), "qq", Toast.LENGTH_SHORT).show();
 
-        txtShop = (TextView) findViewById(R.id.txtShop);
+        sharedpreferences = getSharedPreferences("DinoShoppApp", Context.MODE_PRIVATE);
+        if (sharedpreferences.contains(rssiKey))
+        {
+            rssi = sharedpreferences.getInt(rssiKey, 0);
+        }
+        else {
+            rssi = -50;
+        }
+
+
         txtBeaconInfo = (TextView) findViewById(R.id.txtBeaconInfo);
+        txtRssi = (TextView) findViewById(R.id.txtRssi);
+        txtRssi.setText(getResources().getString(R.string.seekLbl) + String.valueOf(rssi));
+
+        /*
+        get store id
         Intent shopIntent = getIntent();
 
         // dinonfc://dino/shop/X
@@ -53,6 +75,32 @@ public class BeaconActivity extends Activity {
         //Integer shopId = shopIntent.getIntExtra("shopId", 0);
 
         txtShop.setText("Trgovina: " + shopName);
+        */
+        sbProgres = (SeekBar) findViewById(R.id.seekBar);
+        sbProgres.setProgress(rssi * (-1));
+        sbProgres.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                rssi = progress * (-1);
+                txtRssi.setText(getResources().getString(R.string.seekLbl) + String.valueOf(progress));
+
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putInt(rssiKey, rssi);
+                editor.apply();
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
 
 
 
@@ -62,20 +110,22 @@ public class BeaconActivity extends Activity {
             public void onBeaconSighting(BeaconSighting beaconSighting) {
                 super.onBeaconSighting(beaconSighting);
 
-                if(beaconSighting.getRSSI() > -50){
+                if(beaconSighting.getRSSI() > rssi){
                     Beacon moj = beaconSighting.getBeacon();
+                    ulazak++;
                    // Toast.makeText(getApplication(), "ID: " + moj.getName().toString() + "R: " + beaconSighting.getRSSI() + "T: " + moj.getTemperature(), Toast.LENGTH_LONG).show();
-                    txtBeaconInfo.setText("ID: " + moj.getName().toString() + "\nSnaga: " + beaconSighting.getRSSI());
+                    txtBeaconInfo.setText("ID: " + moj.getName() + "\nRSSI: " + beaconSighting.getRSSI() + "\nUlazaka: " + String.valueOf(ulazak));
                 }
                 else
                 {
-                    txtBeaconInfo.setText("Signal slabiji od -50");
+                    txtBeaconInfo.setText("RSSI: " + beaconSighting.getRSSI() +", manji od\nzadanog: " + rssi.toString());
                 }
 
             }
         };
         manager.addListener(moj_listener);
         manager.startListening();
+        /*
         placeEventListener = new PlaceEventListener() {
             @Override
             public void onVisitStart(Visit visit) {
@@ -124,6 +174,7 @@ public class BeaconActivity extends Activity {
         PlaceManager.getInstance().startMonitoring();
         //beaconManager.startListening();
         CommunicationManager.getInstance().startReceivingCommunications();
+        */
     }
 
     @Override
@@ -132,25 +183,5 @@ public class BeaconActivity extends Activity {
         this.finish();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_beacon, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

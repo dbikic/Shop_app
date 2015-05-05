@@ -17,7 +17,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+/*
         shopIntent = new Intent(getApplicationContext(), BeaconActivity.class);
 
         s1 = (Button) findViewById(R.id.btnShop1);
@@ -53,6 +53,7 @@ public class MainActivity extends Activity {
                 startActivity(shopIntent);
             }
         });
+        */
     }
 
 
