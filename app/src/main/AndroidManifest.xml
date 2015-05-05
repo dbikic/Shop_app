@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BeaconActivity"
+            android:name=".ConfigActivity"
             android:label="@string/title_activity_beacon" >
 
 

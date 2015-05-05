@@ -30,7 +30,7 @@ import java.util.Collection;
 import java.util.List;
 
 
-public class BeaconActivity extends Activity {
+public class ConfigActivity extends Activity {
 
     private TextView txtBeaconInfo, txtRssi;
     private SeekBar sbProgres;
