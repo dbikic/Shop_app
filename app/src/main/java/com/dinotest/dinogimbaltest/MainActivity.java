@@ -1,22 +1,19 @@
 package com.dinotest.dinogimbaltest;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
-public class MainActivity extends Activity {
 
-    private Button s1, s2, s3;
-    private Intent shopIntent;
+public class MainActivity extends Activity{
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 /*
         shopIntent = new Intent(getApplicationContext(), BeaconActivity.class);
 
@@ -53,7 +50,7 @@ public class MainActivity extends Activity {
                 startActivity(shopIntent);
             }
         });
-        */
+*/
     }
 
 
