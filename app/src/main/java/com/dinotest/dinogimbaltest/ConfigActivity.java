@@ -47,7 +47,6 @@ public class ConfigActivity extends Activity {
         txtBeaconInfo = (TextView) findViewById(R.id.txtBeaconInfo);
         txtRssi = (TextView) findViewById(R.id.txtRssi);
         txtRssi.setText(getResources().getString(R.string.seekLbl) + String.valueOf(rssi));
-
         /*
         get store id
         Intent shopIntent = getIntent();
