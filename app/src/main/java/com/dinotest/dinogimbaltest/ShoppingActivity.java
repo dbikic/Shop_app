@@ -2,6 +2,7 @@ package com.dinotest.dinogimbaltest;
 
 import android.app.Activity;
 import android.app.NotificationManager;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gimbal.android.Beacon;
 import com.gimbal.android.BeaconEventListener;
@@ -27,6 +29,8 @@ public class ShoppingActivity extends Activity {
     private SharedPreferences sharedpreferences;
     private boolean beacon1Seen = false,beacon2Seen = false,beacon3Seen = false;
     private static final String beacon1Id = "PPCN-QWM7G", beacon2Id = "MGWV-YJA5J", beacon3Id = "6HU1-R7XS5";
+    BluetoothAdapter btAdapter;
+    final static int REQUEST_ENABLE_BT = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,43 @@ public class ShoppingActivity extends Activity {
         setTitle(shopName);
 
         Gimbal.setApiKey(this.getApplication(), "b004f8c0-d82f-4809-8b0c-a3698e0b8d79");
+
+        btAdapter = BluetoothAdapter.getDefaultAdapter();
+        if(btAdapter == null){
+            Toast.makeText(getApplication(), "Bluetooth nije podržan!", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        else {
+            if(btAdapter.isEnabled()){
+                run();
+            }else {
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            }
+        }
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQUEST_ENABLE_BT){
+            if(resultCode==RESULT_OK){
+                Toast.makeText(ShoppingActivity.this, "Bluetooth upaljen!", Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(ShoppingActivity.this, "Bez bluetooth-a aplikacija ne radi...", Toast.LENGTH_LONG).show();
+            }
+        }
+
+        if (btAdapter.isEnabled()) {
+            run();
+        }
+
+    }
+
+    public void run(){
 
         sharedpreferences = getSharedPreferences("DinoShoppApp", Context.MODE_PRIVATE);
         if (sharedpreferences.contains(RSSIKEY)) {
@@ -95,6 +136,5 @@ public class ShoppingActivity extends Activity {
         manager.addListener(mojListener);
         manager.startListening();
     }
-
 
 }
