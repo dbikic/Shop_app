@@ -2,11 +2,14 @@ package com.dinotest.dinogimbaltest;
 
 import android.app.Activity;
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -17,6 +20,10 @@ import com.gimbal.android.BeaconEventListener;
 import com.gimbal.android.BeaconManager;
 import com.gimbal.android.BeaconSighting;
 import com.gimbal.android.Gimbal;
+
+import org.json.JSONObject;
+
+import java.util.List;
 
 
 public class ShoppingActivity extends Activity {
@@ -31,6 +38,11 @@ public class ShoppingActivity extends Activity {
     private static final String beacon1Id = "PPCN-QWM7G", beacon2Id = "MGWV-YJA5J", beacon3Id = "6HU1-R7XS5";
     BluetoothAdapter btAdapter;
     final static int REQUEST_ENABLE_BT = 1;
+
+    // Progress Dialog
+    private ProgressDialog pDialog;
+    // Creating JSON Parser object
+    JSONParser jParser = new JSONParser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +60,10 @@ public class ShoppingActivity extends Activity {
         setTitle(shopName);
 
         Gimbal.setApiKey(this.getApplication(), "b004f8c0-d82f-4809-8b0c-a3698e0b8d79");
-
+/*
+        GetConfig gc = new GetConfig();
+        gc.execute();
+*/
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         if(btAdapter == null){
             Toast.makeText(getApplication(), "Bluetooth nije podržan!", Toast.LENGTH_SHORT).show();
@@ -56,7 +71,8 @@ public class ShoppingActivity extends Activity {
         }
         else {
             if(btAdapter.isEnabled()){
-                run();
+                GetConfig gc = new GetConfig();
+                gc.execute();
             }else {
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
@@ -79,7 +95,8 @@ public class ShoppingActivity extends Activity {
         }
 
         if (btAdapter.isEnabled()) {
-            run();
+            GetConfig gc = new GetConfig();
+            gc.execute();
         }
 
     }
@@ -137,4 +154,33 @@ public class ShoppingActivity extends Activity {
         manager.startListening();
     }
 
+    private class GetConfig extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(ShoppingActivity.this);
+            pDialog.setMessage("Please wait...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            JSONObject obj = null;
+            obj = jParser.makeHttpRequest("http://meri-test.webuda.com/shop_app_backend/api/getConfig.php?id=1", "GET", null);
+            Log.d("JSON", obj.toString());
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            pDialog.dismiss();
+            run();
+        }
+
+    }
 }

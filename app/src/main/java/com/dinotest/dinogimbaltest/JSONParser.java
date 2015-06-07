@@ -125,7 +125,7 @@ public class JSONParser {
 
             } catch (Exception e)
             {
-                if(e!=null)
+                if (e != null)
                     e.printStackTrace();
             }
 
