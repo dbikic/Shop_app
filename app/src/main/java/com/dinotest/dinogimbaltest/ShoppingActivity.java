@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,9 +21,15 @@ import com.gimbal.android.BeaconEventListener;
 import com.gimbal.android.BeaconManager;
 import com.gimbal.android.BeaconSighting;
 import com.gimbal.android.Gimbal;
+import com.qsl.faar.service.location.d;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,6 +45,7 @@ public class ShoppingActivity extends Activity {
     private static final String beacon1Id = "PPCN-QWM7G", beacon2Id = "MGWV-YJA5J", beacon3Id = "6HU1-R7XS5";
     BluetoothAdapter btAdapter;
     final static int REQUEST_ENABLE_BT = 1;
+    List<com.dinotest.dinogimbaltest.Beacon> beaconList;
 
     // Progress Dialog
     private ProgressDialog pDialog;
@@ -101,6 +109,68 @@ public class ShoppingActivity extends Activity {
 
     }
 
+
+    private class GetConfig extends AsyncTask<Void, Void, Void>{
+
+        private boolean status = false;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(ShoppingActivity.this);
+            pDialog.setMessage("Please wait...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            JSONObject obj = null;
+            obj = jParser.makeHttpRequest("http://meri-test.webuda.com/shop_app_backend/api/getConfig.php?id=2", "GET", null);
+            Log.d("JSON", obj.toString());
+
+            try {
+                status = obj.getBoolean("status");
+                if(status){
+                    Log.d("STAT", "true");
+                    List<NameValuePair> currentBeacon = new ArrayList<NameValuePair>();
+
+                    JSONArray beaconArray = obj.getJSONArray("beacons");
+
+                    for(int i=0; i< beaconArray.length(); i++){
+                        currentBeacon.clear();
+                        JSONObject beacon = beaconArray.getJSONObject(i);
+
+                       // currentBeacon.add(new BasicNameValuePair(ID_TAG, beacon.getString(ID_TAG)));
+                        Log.d(String.valueOf(i), beacon.getString("discountName"));
+                        Log.d(String.valueOf(i), beacon.getString("discountProduct"));
+                    }
+
+                }else{
+                    Log.d("STAT", "false");
+                }
+
+
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            pDialog.dismiss();
+
+            if(status){
+                run();
+            }
+        }
+
+    }
+
     public void run(){
 
         sharedpreferences = getSharedPreferences("DinoShoppApp", Context.MODE_PRIVATE);
@@ -153,34 +223,9 @@ public class ShoppingActivity extends Activity {
         manager.addListener(mojListener);
         manager.startListening();
     }
-
-    private class GetConfig extends AsyncTask<Void, Void, Void>{
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(ShoppingActivity.this);
-            pDialog.setMessage("Please wait...");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
-            pDialog.show();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            JSONObject obj = null;
-            obj = jParser.makeHttpRequest("http://meri-test.webuda.com/shop_app_backend/api/getConfig.php?id=1", "GET", null);
-            Log.d("JSON", obj.toString());
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            pDialog.dismiss();
-            run();
-        }
-
+    @Override
+    public void onBackPressed() {
+        manager.stopListening();
+        finish();
     }
 }

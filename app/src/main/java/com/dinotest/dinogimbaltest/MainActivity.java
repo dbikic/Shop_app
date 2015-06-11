@@ -20,6 +20,7 @@ public class MainActivity extends Activity{
         setContentView(R.layout.activity_main);
 
 
+        //Toast.makeText(MainActivity.this, "QWE", Toast.LENGTH_LONG).show();
 
 /*
         shopIntent = new Intent(getApplicationContext(), BeaconActivity.class);
