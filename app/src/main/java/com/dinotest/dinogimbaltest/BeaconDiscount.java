@@ -8,20 +8,20 @@ import java.util.List;
 /**
  * Created by root on 11.06.15..
  */
-public class Beacon {
+public class BeaconDiscount {
     List<NameValuePair> list = new ArrayList<NameValuePair>();
 
     // TODO staviti tagove od apia
-    String ID_TAG = "facto";
-    String DICOUNT_TAG = "status";
-    String PRODUCT_TAG = "centers";
-    String NEW_PRICE_TAG = "name";
-    String OLD_PRICE_TAG = "lat";
-    String VALID_FROM_TAG = "lat";
-    String VALID_TO_TAG = "lat";
+    String ID_TAG = "factory_id";
+    String DISCOUNT_TAG = "discountName";
+    String PRODUCT_TAG = "discountProduct";
+    String NEW_PRICE_TAG = "discountNewPrice";
+    String OLD_PRICE_TAG = "discountOldPrice";
+    String VALID_FROM_TAG = "discountValidFrom";
+    String VALID_TO_TAG = "discountValidTo";
 
 
-    public Beacon(List<NameValuePair> _list){
+    public BeaconDiscount(List<NameValuePair> _list){
         this.list = _list;
     }
 
@@ -39,7 +39,7 @@ public class Beacon {
     }
 
     public String getDiscount(){
-        return getValue(DICOUNT_TAG);
+        return getValue(DISCOUNT_TAG);
     }
 
     public String getProduct(){

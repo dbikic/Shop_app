@@ -1,7 +1,6 @@
 package com.dinotest.dinogimbaltest;
 
 import android.app.Activity;
-import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
@@ -10,9 +9,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.accessibility.AccessibilityManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +17,6 @@ import com.gimbal.android.BeaconEventListener;
 import com.gimbal.android.BeaconManager;
 import com.gimbal.android.BeaconSighting;
 import com.gimbal.android.Gimbal;
-import com.qsl.faar.service.location.d;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -43,24 +38,36 @@ public class ShoppingActivity extends Activity {
     private SharedPreferences sharedpreferences;
     private boolean beacon1Seen = false,beacon2Seen = false,beacon3Seen = false;
     private static final String beacon1Id = "PPCN-QWM7G", beacon2Id = "MGWV-YJA5J", beacon3Id = "6HU1-R7XS5";
-    BluetoothAdapter btAdapter;
+    private BluetoothAdapter btAdapter;
     final static int REQUEST_ENABLE_BT = 1;
-    List<com.dinotest.dinogimbaltest.Beacon> beaconList;
+    private List<BeaconDiscount> beaconDiscountList;
 
     // Progress Dialog
     private ProgressDialog pDialog;
     // Creating JSON Parser object
-    JSONParser jParser = new JSONParser();
+    private JSONParser jParser = new JSONParser();
+
+    private final String STATUS_TAG = "status";
+    private final String STORE_TAG = "store";
+    private final String ID_TAG = "factory_id";
+    private final String DISCOUNT_TAG = "discountName";
+    private final String PRODUCT_TAG = "discountProduct";
+    private final String NEW_PRICE_TAG = "discountNewPrice";
+    private final String OLD_PRICE_TAG = "discountOldPrice";
+    private final String VALID_FROM_TAG = "discountValidFrom";
+    private final String VALID_TO_TAG = "discountValidTo";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping);
 
-
+/*
         txtBeaconInfo1 = (TextView) findViewById(R.id.txtBeacon1Info);
         txtBeaconInfo2 = (TextView) findViewById(R.id.txtBeacon2Info);
         txtBeaconInfo3 = (TextView) findViewById(R.id.txtBeacon3Info);
+        */
         Intent shopIntent = getIntent();
 
         // dinonfc://dino/shop/X
@@ -68,6 +75,8 @@ public class ShoppingActivity extends Activity {
         setTitle(shopName);
 
         Gimbal.setApiKey(this.getApplication(), "b004f8c0-d82f-4809-8b0c-a3698e0b8d79");
+
+        beaconDiscountList = new ArrayList<BeaconDiscount>();
 /*
         GetConfig gc = new GetConfig();
         gc.execute();
@@ -127,25 +136,35 @@ public class ShoppingActivity extends Activity {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            JSONObject obj = null;
-            obj = jParser.makeHttpRequest("http://meri-test.webuda.com/shop_app_backend/api/getConfig.php?id=2", "GET", null);
-            Log.d("JSON", obj.toString());
+            JSONObject jObject = null;
+            jObject = jParser.makeHttpRequest("http://meri-test.webuda.com/shop_app_backend/api/getConfig.php?id=2", "GET", null);
+            Log.d("JSON", jObject.toString());
 
             try {
-                status = obj.getBoolean("status");
+
+                //changeTitle(jObject.getString(STORE_TAG));
+                status = jObject.getBoolean(STATUS_TAG);
                 if(status){
                     Log.d("STAT", "true");
                     List<NameValuePair> currentBeacon = new ArrayList<NameValuePair>();
 
-                    JSONArray beaconArray = obj.getJSONArray("beacons");
+                    JSONArray beaconArray = jObject.getJSONArray("beacons");
+// TODO sta ako nema beacona u responsu?
+
 
                     for(int i=0; i< beaconArray.length(); i++){
                         currentBeacon.clear();
                         JSONObject beacon = beaconArray.getJSONObject(i);
 
-                       // currentBeacon.add(new BasicNameValuePair(ID_TAG, beacon.getString(ID_TAG)));
-                        Log.d(String.valueOf(i), beacon.getString("discountName"));
-                        Log.d(String.valueOf(i), beacon.getString("discountProduct"));
+                        currentBeacon.add(new BasicNameValuePair(ID_TAG, beacon.getString(ID_TAG)));
+                        currentBeacon.add(new BasicNameValuePair(DISCOUNT_TAG, beacon.getString(DISCOUNT_TAG)));
+                        currentBeacon.add(new BasicNameValuePair(PRODUCT_TAG, beacon.getString(PRODUCT_TAG)));
+                        currentBeacon.add(new BasicNameValuePair(NEW_PRICE_TAG, beacon.getString(NEW_PRICE_TAG)));
+                        currentBeacon.add(new BasicNameValuePair(OLD_PRICE_TAG, beacon.getString(OLD_PRICE_TAG)));
+                        currentBeacon.add(new BasicNameValuePair(VALID_FROM_TAG, beacon.getString(VALID_FROM_TAG)));
+                        currentBeacon.add(new BasicNameValuePair(VALID_TO_TAG, beacon.getString(VALID_TO_TAG)));
+// todo provjera jeli aktualan popust
+                        beaconDiscountList.add(new BeaconDiscount(currentBeacon));
                     }
 
                 }else{
@@ -189,18 +208,22 @@ public class ShoppingActivity extends Activity {
 
                 if(beaconSighting.getRSSI() > rssi){
                     Beacon moj = beaconSighting.getBeacon();
-
+                    // todo dodati provjeru dobivenih u mome polju
+/*
                     switch (moj.getIdentifier()){
 
                         case beacon1Id:
                             if(!beacon1Seen){
+
                                 txtBeaconInfo1.setText("Id: " + moj.getIdentifier()
                                         + "\nRssi: " + beaconSighting.getRSSI()
                                         + "\nIme: " + moj.getName());
+
                                 //beacon1Seen = true;
                             }
                             break;
                         case beacon2Id:
+
                             if(!beacon2Seen){
                                 txtBeaconInfo2.setText("Vidio sam: " + moj.getIdentifier()
                                         + "\nRssi: " + beaconSighting.getRSSI()
@@ -217,6 +240,7 @@ public class ShoppingActivity extends Activity {
                             }
                             break;
                     }
+                    */
                 }
             }
         };
@@ -227,5 +251,9 @@ public class ShoppingActivity extends Activity {
     public void onBackPressed() {
         manager.stopListening();
         finish();
+    }
+// todo popraviti mjenjanje naslova
+    public void changeTitle(String newTitle){
+        setTitle(newTitle);
     }
 }
