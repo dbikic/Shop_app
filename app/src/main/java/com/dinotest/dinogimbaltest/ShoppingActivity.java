@@ -36,8 +36,6 @@ public class ShoppingActivity extends Activity {
     private static final String RSSIKEY = "rssiKey";
     private int rssi;
     private SharedPreferences sharedpreferences;
-    private boolean beacon1Seen = false,beacon2Seen = false,beacon3Seen = false;
-    private static final String beacon1Id = "PPCN-QWM7G", beacon2Id = "MGWV-YJA5J", beacon3Id = "6HU1-R7XS5";
     private BluetoothAdapter btAdapter;
     final static int REQUEST_ENABLE_BT = 1;
     private List<BeaconDiscount> beaconDiscountList;
@@ -76,7 +74,7 @@ public class ShoppingActivity extends Activity {
 
         Gimbal.setApiKey(this.getApplication(), "b004f8c0-d82f-4809-8b0c-a3698e0b8d79");
 
-        beaconDiscountList = new ArrayList<BeaconDiscount>();
+        beaconDiscountList = new ArrayList<>();
 /*
         GetConfig gc = new GetConfig();
         gc.execute();
@@ -136,8 +134,8 @@ public class ShoppingActivity extends Activity {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            JSONObject jObject = null;
-            jObject = jParser.makeHttpRequest("http://meri-test.webuda.com/shop_app_backend/api/getConfig.php?id=2", "GET", null);
+            JSONObject jObject = jParser.makeHttpRequest("http://meri-test.webuda.com/shop_app_backend/api/getConfig.php?id=2", "GET", null);
+            // todo exception ako nema neta
             Log.d("JSON", jObject.toString());
 
             try {
@@ -145,27 +143,34 @@ public class ShoppingActivity extends Activity {
                 //changeTitle(jObject.getString(STORE_TAG));
                 status = jObject.getBoolean(STATUS_TAG);
                 if(status){
-                    Log.d("STAT", "true");
-                    List<NameValuePair> currentBeacon = new ArrayList<NameValuePair>();
 
                     JSONArray beaconArray = jObject.getJSONArray("beacons");
-// TODO sta ako nema beacona u responsu?
 
+                    if(beaconArray.length() > 0){
+                        for(int i=0; i< beaconArray.length(); i++){
 
-                    for(int i=0; i< beaconArray.length(); i++){
-                        currentBeacon.clear();
-                        JSONObject beacon = beaconArray.getJSONObject(i);
+                            List<NameValuePair> currentBeacon = new ArrayList<>();
+                            currentBeacon.clear();
 
-                        currentBeacon.add(new BasicNameValuePair(ID_TAG, beacon.getString(ID_TAG)));
-                        currentBeacon.add(new BasicNameValuePair(DISCOUNT_TAG, beacon.getString(DISCOUNT_TAG)));
-                        currentBeacon.add(new BasicNameValuePair(PRODUCT_TAG, beacon.getString(PRODUCT_TAG)));
-                        currentBeacon.add(new BasicNameValuePair(NEW_PRICE_TAG, beacon.getString(NEW_PRICE_TAG)));
-                        currentBeacon.add(new BasicNameValuePair(OLD_PRICE_TAG, beacon.getString(OLD_PRICE_TAG)));
-                        currentBeacon.add(new BasicNameValuePair(VALID_FROM_TAG, beacon.getString(VALID_FROM_TAG)));
-                        currentBeacon.add(new BasicNameValuePair(VALID_TO_TAG, beacon.getString(VALID_TO_TAG)));
+                            JSONObject beacon = beaconArray.getJSONObject(i);
+
+                            Log.d("provjera id", beacon.getString(ID_TAG));
+
+                            currentBeacon.add(new BasicNameValuePair(ID_TAG, beacon.getString(ID_TAG)));
+                            currentBeacon.add(new BasicNameValuePair(DISCOUNT_TAG, beacon.getString(DISCOUNT_TAG)));
+                            currentBeacon.add(new BasicNameValuePair(PRODUCT_TAG, beacon.getString(PRODUCT_TAG)));
+                            currentBeacon.add(new BasicNameValuePair(NEW_PRICE_TAG, beacon.getString(NEW_PRICE_TAG)));
+                            currentBeacon.add(new BasicNameValuePair(OLD_PRICE_TAG, beacon.getString(OLD_PRICE_TAG)));
+                            currentBeacon.add(new BasicNameValuePair(VALID_FROM_TAG, beacon.getString(VALID_FROM_TAG)));
+                            currentBeacon.add(new BasicNameValuePair(VALID_TO_TAG, beacon.getString(VALID_TO_TAG)));
 // todo provjera jeli aktualan popust
-                        beaconDiscountList.add(new BeaconDiscount(currentBeacon));
+                            beaconDiscountList.add(new BeaconDiscount(currentBeacon, false));
+                        }
                     }
+                    else{
+                        // todo nema popusta u ducanu
+                    }
+
 
                 }else{
                     Log.d("STAT", "false");
@@ -182,6 +187,14 @@ public class ShoppingActivity extends Activity {
         @Override
         protected void onPostExecute(Void aVoid) {
             pDialog.dismiss();
+
+            for(int i = 0; i < beaconDiscountList.size(); i++){
+
+                Log.d("post provjera id", beaconDiscountList.get(i).getId());
+
+
+
+            }
 
             if(status){
                 run();
@@ -202,45 +215,24 @@ public class ShoppingActivity extends Activity {
 
         manager = new BeaconManager();
         mojListener = new BeaconEventListener() {
+
             @Override
             public void onBeaconSighting(BeaconSighting beaconSighting) {
                 super.onBeaconSighting(beaconSighting);
 
                 if(beaconSighting.getRSSI() > rssi){
-                    Beacon moj = beaconSighting.getBeacon();
-                    // todo dodati provjeru dobivenih u mome polju
-/*
-                    switch (moj.getIdentifier()){
+                    Beacon foundBeacon = beaconSighting.getBeacon();
 
-                        case beacon1Id:
-                            if(!beacon1Seen){
+                    for(int i = 0; i < beaconDiscountList.size(); i++){
 
-                                txtBeaconInfo1.setText("Id: " + moj.getIdentifier()
-                                        + "\nRssi: " + beaconSighting.getRSSI()
-                                        + "\nIme: " + moj.getName());
-
-                                //beacon1Seen = true;
+                        if(foundBeacon.getIdentifier().equals(beaconDiscountList.get(i).getId())){
+                            if(!beaconDiscountList.get(i).getSeen()){
+                                // todo napraviti dodavanje na listu
+                                Toast.makeText(getApplicationContext(), "Vidio: " + beaconDiscountList.get(i).getId(), Toast.LENGTH_LONG).show();
+                                beaconDiscountList.get(i).setSeen();
                             }
-                            break;
-                        case beacon2Id:
-
-                            if(!beacon2Seen){
-                                txtBeaconInfo2.setText("Vidio sam: " + moj.getIdentifier()
-                                        + "\nRssi: " + beaconSighting.getRSSI()
-                                        + "\nIme: " + moj.getName());
-                                //beacon2Seen = true;
-                            }
-                            break;
-                        case beacon3Id:
-                            if(!beacon3Seen){
-                                txtBeaconInfo3.setText("Vidio sam: " + moj.getIdentifier()
-                                        + "\nRssi: " + beaconSighting.getRSSI()
-                                        + "\nIme: " + moj.getName());
-                                //beacon3Seen = true;
-                            }
-                            break;
+                        }
                     }
-                    */
                 }
             }
         };

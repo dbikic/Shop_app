@@ -9,7 +9,8 @@ import java.util.List;
  * Created by root on 11.06.15..
  */
 public class BeaconDiscount {
-    List<NameValuePair> list = new ArrayList<NameValuePair>();
+    private List<NameValuePair> list = new ArrayList<NameValuePair>();
+    private Boolean seen;
 
     // TODO staviti tagove od apia
     String ID_TAG = "factory_id";
@@ -21,8 +22,10 @@ public class BeaconDiscount {
     String VALID_TO_TAG = "discountValidTo";
 
 
-    public BeaconDiscount(List<NameValuePair> _list){
+    public BeaconDiscount(List<NameValuePair> _list, boolean seen)
+    {
         this.list = _list;
+        this.seen = false;
     }
 
     public String getValue(String value){
@@ -33,6 +36,10 @@ public class BeaconDiscount {
         }
         return "";
     }
+
+    public boolean getSeen(){ return this.seen;}
+
+    public void setSeen(){ this.seen = true;}
 
     public String getId(){
         return getValue(ID_TAG);
