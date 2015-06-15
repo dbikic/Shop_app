@@ -21,14 +21,13 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ConfigActivity"
             android:label="@string/title_activity_beacon" >
-
-
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
 
@@ -42,7 +41,7 @@
         </activity>
         <activity
             android:name=".ShoppingActivity"
-            android:label="@string/title_activity_shopping">
+            android:label="@string/title_activity_shopping" >
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
 
@@ -53,6 +52,10 @@
                     android:pathPrefix="/shop"
                     android:scheme="dinonfc" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".DiscountDetailsActivity"
+            android:label="@string/title_activity_discount_details" >
         </activity>
     </application>
 

@@ -6,4 +6,5 @@
     <string name="title_activity_beacon">Set RSSI</string>
     <string name="seekLbl">RSSI: </string>
     <string name="title_activity_shopping">Trgovina</string>
+    <string name="title_activity_discount_details">DiscountDetailsActivity</string>
 </resources>

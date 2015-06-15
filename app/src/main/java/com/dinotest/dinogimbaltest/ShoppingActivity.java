@@ -9,6 +9,9 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,21 +27,25 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
 public class ShoppingActivity extends Activity {
 
     private TextView txtBeaconInfo1, txtBeaconInfo2, txtBeaconInfo3;
-    private BeaconEventListener mojListener;
-    private BeaconManager manager;
+    private BeaconEventListener beaconEventListener;
+    private BeaconManager beaconManager;
     private static final String RSSIKEY = "rssiKey";
     private int rssi;
     private SharedPreferences sharedpreferences;
     private BluetoothAdapter btAdapter;
     final static int REQUEST_ENABLE_BT = 1;
-    private List<BeaconDiscount> beaconDiscountList;
+    private List<BeaconDiscount> beaconDiscountList, seenBeacons;
+    private BeaconListDisplayAdapter adapter;
 
     // Progress Dialog
     private ProgressDialog pDialog;
@@ -54,6 +61,11 @@ public class ShoppingActivity extends Activity {
     private final String OLD_PRICE_TAG = "discountOldPrice";
     private final String VALID_FROM_TAG = "discountValidFrom";
     private final String VALID_TO_TAG = "discountValidTo";
+    private Globals globalValues;
+    private String shopName;
+
+    private ListView lvBeacons;
+
 
 
     @Override
@@ -61,20 +73,23 @@ public class ShoppingActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping);
 
-/*
-        txtBeaconInfo1 = (TextView) findViewById(R.id.txtBeacon1Info);
-        txtBeaconInfo2 = (TextView) findViewById(R.id.txtBeacon2Info);
-        txtBeaconInfo3 = (TextView) findViewById(R.id.txtBeacon3Info);
-        */
+        globalValues = new Globals();
+
+        beaconDiscountList = new ArrayList<>();
+        seenBeacons = new ArrayList<>();
+
+        lvBeacons = (ListView) findViewById(R.id.lvBeacons);
+        adapter = new BeaconListDisplayAdapter(this, R.layout.beacons_list_item, seenBeacons);
+        lvBeacons.setAdapter(adapter);
+        lvBeacons.setOnItemClickListener(beaconListClick);
+
         Intent shopIntent = getIntent();
 
         // dinonfc://dino/shop/X
-        String shopName = shopIntent.getDataString().substring(20);
-        setTitle(shopName);
+        shopName = shopIntent.getDataString().substring(20);
 
         Gimbal.setApiKey(this.getApplication(), "b004f8c0-d82f-4809-8b0c-a3698e0b8d79");
 
-        beaconDiscountList = new ArrayList<>();
 /*
         GetConfig gc = new GetConfig();
         gc.execute();
@@ -134,7 +149,7 @@ public class ShoppingActivity extends Activity {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            JSONObject jObject = jParser.makeHttpRequest("http://meri-test.webuda.com/shop_app_backend/api/getConfig.php?id=2", "GET", null);
+            JSONObject jObject = jParser.makeHttpRequest(globalValues.getBeacons() + shopName, "GET", null);
             // todo exception ako nema neta
             Log.d("JSON", jObject.toString());
 
@@ -163,11 +178,13 @@ public class ShoppingActivity extends Activity {
                             currentBeacon.add(new BasicNameValuePair(OLD_PRICE_TAG, beacon.getString(OLD_PRICE_TAG)));
                             currentBeacon.add(new BasicNameValuePair(VALID_FROM_TAG, beacon.getString(VALID_FROM_TAG)));
                             currentBeacon.add(new BasicNameValuePair(VALID_TO_TAG, beacon.getString(VALID_TO_TAG)));
-// todo provjera jeli aktualan popust
-                            beaconDiscountList.add(new BeaconDiscount(currentBeacon, false));
+
+                            if(isDiscountValid( beacon.getString(VALID_FROM_TAG),  beacon.getString(VALID_TO_TAG)))
+                                beaconDiscountList.add(new BeaconDiscount(currentBeacon, false));
                         }
                     }
-                    else{
+
+                    if (beaconDiscountList.size() == 0){
                         // todo nema popusta u ducanu
                     }
 
@@ -188,22 +205,33 @@ public class ShoppingActivity extends Activity {
         protected void onPostExecute(Void aVoid) {
             pDialog.dismiss();
 
-            for(int i = 0; i < beaconDiscountList.size(); i++){
-
-                Log.d("post provjera id", beaconDiscountList.get(i).getId());
-
-
-
-            }
-
             if(status){
-                run();
+                beaconSearcher();
             }
         }
 
     }
 
-    public void run(){
+    public boolean isDiscountValid(String date1, String date2){
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+
+            Date dateFrom = format.parse(date1);
+            Date dateTo = format.parse(date2);
+            if(dateFrom.before(dateTo)){
+                return true;
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+
+    public void beaconSearcher(){
 
         sharedpreferences = getSharedPreferences("DinoShoppApp", Context.MODE_PRIVATE);
         if (sharedpreferences.contains(RSSIKEY)) {
@@ -213,8 +241,8 @@ public class ShoppingActivity extends Activity {
             rssi = -50;
         }
 
-        manager = new BeaconManager();
-        mojListener = new BeaconEventListener() {
+        beaconManager = new BeaconManager();
+        beaconEventListener = new BeaconEventListener() {
 
             @Override
             public void onBeaconSighting(BeaconSighting beaconSighting) {
@@ -227,24 +255,45 @@ public class ShoppingActivity extends Activity {
 
                         if(foundBeacon.getIdentifier().equals(beaconDiscountList.get(i).getId())){
                             if(!beaconDiscountList.get(i).getSeen()){
-                                // todo napraviti dodavanje na listu
                                 Toast.makeText(getApplicationContext(), "Vidio: " + beaconDiscountList.get(i).getId(), Toast.LENGTH_LONG).show();
+                                seenBeacons.add(beaconDiscountList.get(i));
                                 beaconDiscountList.get(i).setSeen();
+
+                                adapter.notifyDataSetChanged();
                             }
                         }
                     }
                 }
             }
         };
-        manager.addListener(mojListener);
-        manager.startListening();
+        beaconManager.addListener(beaconEventListener);
+        beaconManager.startListening();
     }
+
+
+    private AdapterView.OnItemClickListener beaconListClick = new AdapterView.OnItemClickListener(){
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            globalValues.setCurrentBeacon(seenBeacons.get(i));
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent();
+                    intent.setClass(getApplicationContext(), DiscountDetailsActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+    };
+
+
     @Override
     public void onBackPressed() {
-        manager.stopListening();
+        beaconManager.stopListening();
         finish();
     }
-// todo popraviti mjenjanje naslova
     public void changeTitle(String newTitle){
         setTitle(newTitle);
     }
