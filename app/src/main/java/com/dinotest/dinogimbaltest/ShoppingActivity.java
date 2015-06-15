@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -53,14 +54,16 @@ public class ShoppingActivity extends Activity {
     private JSONParser jParser = new JSONParser();
 
     private final String STATUS_TAG = "status";
+    private final String DISCOUNT_ID_TAG = "id";
     private final String STORE_TAG = "store";
-    private final String ID_TAG = "factory_id";
+    private final String BEACON_ID = "factory_id";
     private final String DISCOUNT_TAG = "discountName";
     private final String PRODUCT_TAG = "discountProduct";
     private final String NEW_PRICE_TAG = "discountNewPrice";
     private final String OLD_PRICE_TAG = "discountOldPrice";
     private final String VALID_FROM_TAG = "discountValidFrom";
     private final String VALID_TO_TAG = "discountValidTo";
+    private final String CODE_TAG = "code";
     private Globals globalValues;
     private String shopName;
 
@@ -149,8 +152,18 @@ public class ShoppingActivity extends Activity {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            JSONObject jObject = jParser.makeHttpRequest(globalValues.getBeacons() + shopName, "GET", null);
+
+            List<NameValuePair> getMethodParametars = new ArrayList<>();
+            getMethodParametars.add(new BasicNameValuePair("id",shopName));
+            TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            getMethodParametars.add(new BasicNameValuePair("user",telephonyManager.getDeviceId()));
+
+            JSONObject jObject = jParser.makeHttpRequest(globalValues.getBeacons(), "GET", getMethodParametars);
+
             // todo exception ako nema neta
+            Log.d("ID", telephonyManager.getDeviceId());
+
+
             Log.d("JSON", jObject.toString());
 
             try {
@@ -169,15 +182,17 @@ public class ShoppingActivity extends Activity {
 
                             JSONObject beacon = beaconArray.getJSONObject(i);
 
-                            Log.d("provjera id", beacon.getString(ID_TAG));
+                            Log.d("provjera id", beacon.getString(BEACON_ID));
 
-                            currentBeacon.add(new BasicNameValuePair(ID_TAG, beacon.getString(ID_TAG)));
+                            currentBeacon.add(new BasicNameValuePair(BEACON_ID, beacon.getString(BEACON_ID)));
                             currentBeacon.add(new BasicNameValuePair(DISCOUNT_TAG, beacon.getString(DISCOUNT_TAG)));
+                            currentBeacon.add(new BasicNameValuePair(DISCOUNT_ID_TAG, beacon.getString(DISCOUNT_ID_TAG)));
                             currentBeacon.add(new BasicNameValuePair(PRODUCT_TAG, beacon.getString(PRODUCT_TAG)));
                             currentBeacon.add(new BasicNameValuePair(NEW_PRICE_TAG, beacon.getString(NEW_PRICE_TAG)));
                             currentBeacon.add(new BasicNameValuePair(OLD_PRICE_TAG, beacon.getString(OLD_PRICE_TAG)));
                             currentBeacon.add(new BasicNameValuePair(VALID_FROM_TAG, beacon.getString(VALID_FROM_TAG)));
                             currentBeacon.add(new BasicNameValuePair(VALID_TO_TAG, beacon.getString(VALID_TO_TAG)));
+                            currentBeacon.add(new BasicNameValuePair(CODE_TAG, beacon.getString(CODE_TAG)));
 
                             if(isDiscountValid( beacon.getString(VALID_FROM_TAG),  beacon.getString(VALID_TO_TAG)))
                                 beaconDiscountList.add(new BeaconDiscount(currentBeacon, false));
