@@ -37,7 +37,6 @@ import java.util.List;
 
 public class ShoppingActivity extends Activity {
 
-    private TextView txtBeaconInfo1, txtBeaconInfo2, txtBeaconInfo3;
     private BeaconEventListener beaconEventListener;
     private BeaconManager beaconManager;
     private static final String RSSIKEY = "rssiKey";
@@ -198,11 +197,11 @@ public class ShoppingActivity extends Activity {
                                 beaconDiscountList.add(new BeaconDiscount(currentBeacon, false));
                         }
                     }
-
+/*
                     if (beaconDiscountList.size() == 0){
                         // todo nema popusta u ducanu
                     }
-
+*/
 
                 }else{
                     Log.d("STAT", "false");

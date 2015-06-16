@@ -26,7 +26,7 @@ import java.util.List;
 
 public class DiscountDetailsActivity extends Activity {
 
-    private TextView tvProduct, tvOldPrice, tvNewPrice, tvDiscount, tvCode, tvDiscountPercentage, tvValidUntil;
+    private TextView tvCode;
     private Button btnGetCode;
     private BeaconDiscount beaconDiscount;
     private Globals globalValues;
@@ -49,13 +49,13 @@ public class DiscountDetailsActivity extends Activity {
         globalValues = new Globals();
         beaconDiscount = globalValues.getCurrentSelectedBeacon();
 
-        tvProduct = (TextView) findViewById(R.id.tvProduct);
-        tvOldPrice = (TextView) findViewById(R.id.tvOldPrice);
-        tvNewPrice = (TextView) findViewById(R.id.tvNewPrice);
-        tvDiscount = (TextView) findViewById(R.id.tvDiscount);
+        TextView tvProduct = (TextView) findViewById(R.id.tvProduct);
+        TextView tvOldPrice = (TextView) findViewById(R.id.tvOldPrice);
+        TextView tvNewPrice = (TextView) findViewById(R.id.tvNewPrice);
+        TextView tvDiscount = (TextView) findViewById(R.id.tvDiscount);
+        TextView tvDiscountPercentage = (TextView) findViewById(R.id.tvDiscountPercentage);
+        TextView tvValidUntil = (TextView) findViewById(R.id.tvValidUntil);
         tvCode = (TextView) findViewById(R.id.tvCode);
-        tvDiscountPercentage = (TextView) findViewById(R.id.tvDiscountPercentage);
-        tvValidUntil = (TextView) findViewById(R.id.tvValidUntil);
 
         tvProduct.setText(beaconDiscount.getProduct());
         tvOldPrice.setText(beaconDiscount.getOldPrice());
