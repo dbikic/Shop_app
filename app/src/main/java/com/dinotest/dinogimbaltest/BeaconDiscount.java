@@ -1,6 +1,7 @@
 package com.dinotest.dinogimbaltest;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ public class BeaconDiscount {
 
     // TODO staviti tagove od apia
     String BEACON_ID = "factory_id";
-    String DISCOUNT_ID_TAG = "id";
+    String DISCOUNT_ID_TAG = "discount_id";
     String DISCOUNT_TAG = "discountName";
     String PRODUCT_TAG = "discountProduct";
     String NEW_PRICE_TAG = "discountNewPrice";
@@ -37,6 +38,16 @@ public class BeaconDiscount {
             }
         }
         return "";
+    }
+
+
+    public Void setValue(String tag, String value){
+        for(int i = 0; i < list.size(); i++){
+            if(list.get(i).getName().equals(tag)){
+                list.set(i, new BasicNameValuePair(tag, value));
+            }
+        }
+        return null;
     }
 
     public boolean getSeen(){ return this.seen;}

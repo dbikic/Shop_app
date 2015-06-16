@@ -54,7 +54,7 @@ public class ShoppingActivity extends Activity {
     private JSONParser jParser = new JSONParser();
 
     private final String STATUS_TAG = "status";
-    private final String DISCOUNT_ID_TAG = "id";
+    private final String DISCOUNT_ID_TAG = "discount_id";
     private final String STORE_TAG = "store";
     private final String BEACON_ID = "factory_id";
     private final String DISCOUNT_TAG = "discountName";
