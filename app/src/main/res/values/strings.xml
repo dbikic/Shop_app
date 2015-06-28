@@ -7,4 +7,11 @@
     <string name="seekLbl">RSSI: </string>
     <string name="title_activity_shopping">Trgovina</string>
     <string name="title_activity_discount_details">DiscountDetailsActivity</string>
+    <string name="allDiscountsLabel">Svi popusti</string>
+    <string name="productLbl">Proizvod</string>
+    <string name="oldpriceLbl">Stara cijena</string>
+    <string name="newPriceLbl">Nova cijena</string>
+    <string name="discountLbl">Popust</string>
+    <string name="validUntilLbl">Vrijedi do</string>
+    <string name="getCodeLbl">Ostvari popust</string>
 </resources>

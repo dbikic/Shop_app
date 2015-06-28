@@ -10,16 +10,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
+        android:text=""
         android:id="@+id/tvDiscount"
         android:gravity="center_horizontal"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        tools:text="Placeholder"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="@string/getCodeLbl"
         android:id="@+id/btnGetCode"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
@@ -29,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
+        android:text=""
         android:id="@+id/tvCode"
         android:gravity="center_horizontal"
         android:visibility="gone"
@@ -53,17 +54,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Product"
+                android:text="@string/productLbl"
                 android:id="@+id/textView2"
-                android:layout_weight="0.3"/>
+                android:layout_weight="0.4"
+                android:gravity="center_horizontal" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
+                android:text=""
                 android:id="@+id/tvProduct"
-                android:layout_weight="0.7"/>
+                android:layout_weight="0.6"
+                android:gravity="center_horizontal" />
         </TableRow>
 
         <TableRow
@@ -76,17 +79,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Old price"
+                android:text="@string/oldpriceLbl"
                 android:id="@+id/textView4"
-                android:layout_weight="0.3"/>
+                android:layout_weight="0.4"
+                android:gravity="center_horizontal" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
+                android:text=""
                 android:id="@+id/tvOldPrice"
-                android:layout_weight="0.7"/>
+                android:layout_weight="0.6"
+                android:gravity="center_horizontal" />
         </TableRow>
 
         <TableRow
@@ -98,17 +103,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="New price"
+                android:text="@string/newPriceLbl"
                 android:id="@+id/textView6"
-                android:layout_weight="0.3" />
+                android:layout_weight="0.4"
+                android:gravity="center_horizontal" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
+                android:text=""
                 android:id="@+id/tvNewPrice"
-                android:layout_weight="0.7"/>
+                android:layout_weight="0.6"
+                android:gravity="center_horizontal" />
         </TableRow>
 
         <TableRow
@@ -121,17 +128,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Discount"
+                android:text="@string/discountLbl"
                 android:id="@+id/textView8"
-                android:layout_weight="0.3"/>
+                android:layout_weight="0.4"
+                android:gravity="center_horizontal" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="tv"
                 android:id="@+id/tvDiscountPercentage"
-                android:layout_weight="0.7"/>
+                android:layout_weight="0.6"
+                android:gravity="center_horizontal" />
         </TableRow>
 
         <TableRow
@@ -143,17 +151,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Valid until"
+                android:text="@string/validUntilLbl"
                 android:id="@+id/textView10"
-                android:layout_weight="0.3"/>
+                android:layout_weight="0.4"
+                android:gravity="center_horizontal" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
+                android:text=""
                 android:id="@+id/tvValidUntil"
-                android:layout_weight="0.7"/>
+                android:layout_weight="0.6"
+                android:gravity="center_horizontal" />
         </TableRow>
     </TableLayout>
 

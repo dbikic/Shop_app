@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -39,6 +40,7 @@ public class DiscountDetailsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_discount_details);
 
         init();
@@ -58,8 +60,8 @@ public class DiscountDetailsActivity extends Activity {
         tvCode = (TextView) findViewById(R.id.tvCode);
 
         tvProduct.setText(beaconDiscount.getProduct());
-        tvOldPrice.setText(beaconDiscount.getOldPrice());
-        tvNewPrice.setText(beaconDiscount.getNewPrice());
+        tvOldPrice.setText(beaconDiscount.getOldPrice() + " kn");
+        tvNewPrice.setText(beaconDiscount.getNewPrice() + " kn");
         tvDiscountPercentage.setText(getPercentage(beaconDiscount.getOldPrice(), beaconDiscount.getNewPrice()));
         tvDiscount.setText(beaconDiscount.getDiscount());
         tvValidUntil.setText(beaconDiscount.getValidTo());
@@ -77,7 +79,7 @@ public class DiscountDetailsActivity extends Activity {
             });
 
         }else{
-            tvCode.setText(beaconDiscount.getCode());
+            tvCode.setText("Vaš kod za popust:\n" + beaconDiscount.getCode());
             tvCode.setVisibility(View.VISIBLE);
         }
 
@@ -100,7 +102,7 @@ public class DiscountDetailsActivity extends Activity {
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(DiscountDetailsActivity.this);
-            pDialog.setMessage("Please wait...");
+            pDialog.setMessage("Trenutak...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
@@ -128,7 +130,7 @@ public class DiscountDetailsActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            tvCode.setText(beaconDiscount.getCode());
+                            tvCode.setText("Vaš kod za popust:\n" + beaconDiscount.getCode());
                             btnGetCode.setVisibility(View.GONE);
                             tvCode.setVisibility(View.VISIBLE);
                         }

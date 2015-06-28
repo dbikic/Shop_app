@@ -75,6 +75,11 @@ public class ShoppingActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping);
 
+        init();
+    }
+
+    public void init(){
+
         globalValues = new Globals();
 
         beaconDiscountList = new ArrayList<>();
@@ -110,8 +115,6 @@ public class ShoppingActivity extends Activity {
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             }
         }
-
-
     }
 
     @Override
@@ -137,6 +140,7 @@ public class ShoppingActivity extends Activity {
     private class GetConfig extends AsyncTask<Void, Void, Void>{
 
         private boolean status = false;
+        private String newTitle;
 
         @Override
         protected void onPreExecute() {
@@ -207,6 +211,7 @@ public class ShoppingActivity extends Activity {
                     Log.d("STAT", "false");
                 }
 
+                newTitle = jObject.getString(STORE_TAG);
 
             }catch (JSONException e){
                 e.printStackTrace();
@@ -217,6 +222,8 @@ public class ShoppingActivity extends Activity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
+
+            setTitle(newTitle);
             pDialog.dismiss();
 
             if(status){
@@ -269,7 +276,6 @@ public class ShoppingActivity extends Activity {
 
                         if(foundBeacon.getIdentifier().equals(beaconDiscountList.get(i).getId())){
                             if(!beaconDiscountList.get(i).getSeen()){
-                                Toast.makeText(getApplicationContext(), "Vidio: " + beaconDiscountList.get(i).getId(), Toast.LENGTH_LONG).show();
                                 seenBeacons.add(beaconDiscountList.get(i));
                                 beaconDiscountList.get(i).setSeen();
 
@@ -308,7 +314,9 @@ public class ShoppingActivity extends Activity {
         beaconManager.stopListening();
         finish();
     }
-    public void changeTitle(String newTitle){
-        setTitle(newTitle);
+
+    public void changeTitle(Context c, String newTitle){
+
+
     }
 }
