@@ -1,4 +1,4 @@
-package com.dinotest.dinogimbaltest;
+package com.dinotest.dinogimbaltest.models;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;

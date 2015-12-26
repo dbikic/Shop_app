@@ -14,4 +14,8 @@
     <string name="discountLbl">Popust</string>
     <string name="validUntilLbl">Vrijedi do</string>
     <string name="getCodeLbl">Ostvari popust</string>
+    <string name="ok">OK</string>
+    <string name="main_screen_message">Za početak korištenja aplikacije upalite NFC senzor i prislonite mobilni uređaj uz oznaku na početku
+        dućana i krenite u istraživanje popusta!
+    </string>
 </resources>

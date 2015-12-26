@@ -1,11 +1,21 @@
-package com.dinotest.dinogimbaltest;
+package com.dinotest.dinogimbaltest.activities;
+
+import com.dinotest.dinogimbaltest.R;
+import com.dinotest.dinogimbaltest.models.BeaconDiscount;
+import com.dinotest.dinogimbaltest.utils.DisplayHelper;
+import com.dinotest.dinogimbaltest.utils.Globals;
+import com.dinotest.dinogimbaltest.utils.JSONParser;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -13,27 +23,25 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-
-
-// Progress Dialog
-
 
 public class DiscountDetailsActivity extends Activity {
 
     private TextView tvCode;
+
     private Button btnGetCode;
+
     private BeaconDiscount beaconDiscount;
+
     private Globals globalValues;
+
     private ProgressDialog pDialog;
+
     private JSONParser jParser = new JSONParser();
+
     private final String STATUS_TAG = "status";
+
     private final String CODE_TAG = "code";
 
 
@@ -62,11 +70,11 @@ public class DiscountDetailsActivity extends Activity {
         tvProduct.setText(beaconDiscount.getProduct());
         tvOldPrice.setText(beaconDiscount.getOldPrice() + " kn");
         tvNewPrice.setText(beaconDiscount.getNewPrice() + " kn");
-        tvDiscountPercentage.setText(getPercentage(beaconDiscount.getOldPrice(), beaconDiscount.getNewPrice()));
+        tvDiscountPercentage.setText(DisplayHelper.getPercentage(beaconDiscount.getOldPrice(), beaconDiscount.getNewPrice()));
         tvDiscount.setText(beaconDiscount.getDiscount());
         tvValidUntil.setText(beaconDiscount.getValidTo());
 
-        if(beaconDiscount.getCode().equals("0")){
+        if (beaconDiscount.getCode().equals("0")) {
 
             btnGetCode = (Button) findViewById(R.id.btnGetCode);
             btnGetCode.setVisibility(View.VISIBLE);
@@ -78,20 +86,11 @@ public class DiscountDetailsActivity extends Activity {
                 }
             });
 
-        }else{
+        } else {
             tvCode.setText("Vaš kod za popust:\n" + beaconDiscount.getCode());
             tvCode.setVisibility(View.VISIBLE);
         }
 
-    }
-
-
-    private String getPercentage(String oldPrice, String newPrice){
-        float oldP = Float.parseFloat(oldPrice);
-        float newP = Float.parseFloat(newPrice);
-        float percentage = (newP/oldP) * 100;
-
-        return String.format("%.02f", 100 - percentage) + " %";
     }
 
     private class GetCode extends AsyncTask<Void, Void, Void> {
@@ -112,11 +111,10 @@ public class DiscountDetailsActivity extends Activity {
         protected Void doInBackground(Void... voids) {
 
             List<NameValuePair> getMethodParametars = new ArrayList<>();
-            getMethodParametars.add(new BasicNameValuePair("discount_id",beaconDiscount.getDiscountId()));
+            getMethodParametars.add(new BasicNameValuePair("discount_id", beaconDiscount.getDiscountId()));
 
             TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            getMethodParametars.add(new BasicNameValuePair("uid",telephonyManager.getDeviceId()));
-
+            getMethodParametars.add(new BasicNameValuePair("uid", telephonyManager.getDeviceId()));
 
             JSONObject jObject = jParser.makeHttpRequest(globalValues.getCode(), "POST", getMethodParametars);
             // todo exception ako nema neta
@@ -136,7 +134,7 @@ public class DiscountDetailsActivity extends Activity {
                         }
                     });
                 }
-            }catch (JSONException e){
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
             return null;

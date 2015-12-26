@@ -1,4 +1,21 @@
-package com.dinotest.dinogimbaltest;
+package com.dinotest.dinogimbaltest.activities;
+
+import com.dinotest.dinogimbaltest.R;
+import com.dinotest.dinogimbaltest.adapters.BeaconListDisplayAdapter;
+import com.dinotest.dinogimbaltest.models.BeaconDiscount;
+import com.dinotest.dinogimbaltest.utils.Globals;
+import com.dinotest.dinogimbaltest.utils.JSONParser;
+import com.gimbal.android.Beacon;
+import com.gimbal.android.BeaconEventListener;
+import com.gimbal.android.BeaconManager;
+import com.gimbal.android.BeaconSighting;
+import com.gimbal.android.Gimbal;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -13,20 +30,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.gimbal.android.Beacon;
-import com.gimbal.android.BeaconEventListener;
-import com.gimbal.android.BeaconManager;
-import com.gimbal.android.BeaconSighting;
-import com.gimbal.android.Gimbal;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,36 +42,56 @@ import java.util.List;
 public class ShoppingActivity extends Activity {
 
     private BeaconEventListener beaconEventListener;
+
     private BeaconManager beaconManager;
+
     private static final String RSSIKEY = "rssiKey";
+
     private int rssi;
+
     private SharedPreferences sharedpreferences;
+
     private BluetoothAdapter btAdapter;
+
     final static int REQUEST_ENABLE_BT = 1;
+
     private List<BeaconDiscount> beaconDiscountList, seenBeacons;
+
     private BeaconListDisplayAdapter adapter;
 
     // Progress Dialog
     private ProgressDialog pDialog;
+
     // Creating JSON Parser object
     private JSONParser jParser = new JSONParser();
 
     private final String STATUS_TAG = "status";
+
     private final String DISCOUNT_ID_TAG = "discount_id";
+
     private final String STORE_TAG = "store";
+
     private final String BEACON_ID = "factory_id";
+
     private final String DISCOUNT_TAG = "discountName";
+
     private final String PRODUCT_TAG = "discountProduct";
+
     private final String NEW_PRICE_TAG = "discountNewPrice";
+
     private final String OLD_PRICE_TAG = "discountOldPrice";
+
     private final String VALID_FROM_TAG = "discountValidFrom";
+
     private final String VALID_TO_TAG = "discountValidTo";
+
     private final String CODE_TAG = "code";
+
     private Globals globalValues;
+
     private String shopName;
 
     private ListView lvBeacons;
-
 
 
     @Override
@@ -78,7 +102,7 @@ public class ShoppingActivity extends Activity {
         init();
     }
 
-    public void init(){
+    public void init() {
 
         globalValues = new Globals();
 
@@ -102,15 +126,14 @@ public class ShoppingActivity extends Activity {
         gc.execute();
 */
         btAdapter = BluetoothAdapter.getDefaultAdapter();
-        if(btAdapter == null){
+        if (btAdapter == null) {
             Toast.makeText(getApplication(), "Bluetooth nije podržan!", Toast.LENGTH_SHORT).show();
             finish();
-        }
-        else {
-            if(btAdapter.isEnabled()){
+        } else {
+            if (btAdapter.isEnabled()) {
                 GetConfig gc = new GetConfig();
                 gc.execute();
-            }else {
+            } else {
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             }
@@ -121,10 +144,10 @@ public class ShoppingActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == REQUEST_ENABLE_BT){
-            if(resultCode==RESULT_OK){
+        if (requestCode == REQUEST_ENABLE_BT) {
+            if (resultCode == RESULT_OK) {
                 Toast.makeText(ShoppingActivity.this, "Bluetooth upaljen!", Toast.LENGTH_LONG).show();
-            }else{
+            } else {
                 Toast.makeText(ShoppingActivity.this, "Bez bluetooth-a aplikacija ne radi...", Toast.LENGTH_LONG).show();
             }
         }
@@ -137,9 +160,10 @@ public class ShoppingActivity extends Activity {
     }
 
 
-    private class GetConfig extends AsyncTask<Void, Void, Void>{
+    private class GetConfig extends AsyncTask<Void, Void, Void> {
 
         private boolean status = false;
+
         private String newTitle;
 
         @Override
@@ -155,17 +179,15 @@ public class ShoppingActivity extends Activity {
         @Override
         protected Void doInBackground(Void... voids) {
 
-
             List<NameValuePair> getMethodParametars = new ArrayList<>();
-            getMethodParametars.add(new BasicNameValuePair("id",shopName));
+            getMethodParametars.add(new BasicNameValuePair("id", shopName));
             TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            getMethodParametars.add(new BasicNameValuePair("user",telephonyManager.getDeviceId()));
+            getMethodParametars.add(new BasicNameValuePair("user", telephonyManager.getDeviceId()));
 
             JSONObject jObject = jParser.makeHttpRequest(globalValues.getBeacons(), "GET", getMethodParametars);
 
             // todo exception ako nema neta
             Log.d("ID", telephonyManager.getDeviceId());
-
 
             Log.d("JSON", jObject.toString());
 
@@ -173,12 +195,12 @@ public class ShoppingActivity extends Activity {
 
                 //changeTitle(jObject.getString(STORE_TAG));
                 status = jObject.getBoolean(STATUS_TAG);
-                if(status){
+                if (status) {
 
                     JSONArray beaconArray = jObject.getJSONArray("beacons");
 
-                    if(beaconArray.length() > 0){
-                        for(int i=0; i< beaconArray.length(); i++){
+                    if (beaconArray.length() > 0) {
+                        for (int i = 0; i < beaconArray.length(); i++) {
 
                             List<NameValuePair> currentBeacon = new ArrayList<>();
                             currentBeacon.clear();
@@ -197,8 +219,9 @@ public class ShoppingActivity extends Activity {
                             currentBeacon.add(new BasicNameValuePair(VALID_TO_TAG, beacon.getString(VALID_TO_TAG)));
                             currentBeacon.add(new BasicNameValuePair(CODE_TAG, beacon.getString(CODE_TAG)));
 
-                            if(isDiscountValid( beacon.getString(VALID_FROM_TAG),  beacon.getString(VALID_TO_TAG)))
+                            if (isDiscountValid(beacon.getString(VALID_FROM_TAG), beacon.getString(VALID_TO_TAG))) {
                                 beaconDiscountList.add(new BeaconDiscount(currentBeacon, false));
+                            }
                         }
                     }
 /*
@@ -207,13 +230,13 @@ public class ShoppingActivity extends Activity {
                     }
 */
 
-                }else{
+                } else {
                     Log.d("STAT", "false");
                 }
 
                 newTitle = jObject.getString(STORE_TAG);
 
-            }catch (JSONException e){
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
@@ -226,21 +249,21 @@ public class ShoppingActivity extends Activity {
             setTitle(newTitle);
             pDialog.dismiss();
 
-            if(status){
+            if (status) {
                 beaconSearcher();
             }
         }
 
     }
 
-    public boolean isDiscountValid(String date1, String date2){
+    public boolean isDiscountValid(String date1, String date2) {
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
 
             Date dateFrom = format.parse(date1);
             Date dateTo = format.parse(date2);
-            if(dateFrom.before(dateTo)){
+            if (dateFrom.before(dateTo)) {
                 return true;
             }
 
@@ -252,13 +275,12 @@ public class ShoppingActivity extends Activity {
     }
 
 
-    public void beaconSearcher(){
+    public void beaconSearcher() {
 
         sharedpreferences = getSharedPreferences("DinoShoppApp", Context.MODE_PRIVATE);
         if (sharedpreferences.contains(RSSIKEY)) {
             rssi = sharedpreferences.getInt(RSSIKEY, 0);
-        }
-        else {
+        } else {
             rssi = -50;
         }
 
@@ -269,13 +291,13 @@ public class ShoppingActivity extends Activity {
             public void onBeaconSighting(BeaconSighting beaconSighting) {
                 super.onBeaconSighting(beaconSighting);
 
-                if(beaconSighting.getRSSI() > rssi){
+                if (beaconSighting.getRSSI() > rssi) {
                     Beacon foundBeacon = beaconSighting.getBeacon();
 
-                    for(int i = 0; i < beaconDiscountList.size(); i++){
+                    for (int i = 0; i < beaconDiscountList.size(); i++) {
 
-                        if(foundBeacon.getIdentifier().equals(beaconDiscountList.get(i).getId())){
-                            if(!beaconDiscountList.get(i).getSeen()){
+                        if (foundBeacon.getIdentifier().equals(beaconDiscountList.get(i).getId())) {
+                            if (!beaconDiscountList.get(i).getSeen()) {
                                 seenBeacons.add(beaconDiscountList.get(i));
                                 beaconDiscountList.get(i).setSeen();
 
@@ -291,7 +313,7 @@ public class ShoppingActivity extends Activity {
     }
 
 
-    private AdapterView.OnItemClickListener beaconListClick = new AdapterView.OnItemClickListener(){
+    private AdapterView.OnItemClickListener beaconListClick = new AdapterView.OnItemClickListener() {
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -315,8 +337,7 @@ public class ShoppingActivity extends Activity {
         finish();
     }
 
-    public void changeTitle(Context c, String newTitle){
-
+    public void changeTitle(Context c, String newTitle) {
 
     }
 }

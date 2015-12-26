@@ -1,5 +1,7 @@
-package com.dinotest.dinogimbaltest;
+package com.dinotest.dinogimbaltest.utils;
 
+
+import com.dinotest.dinogimbaltest.models.BeaconDiscount;
 
 public final class Globals {
 

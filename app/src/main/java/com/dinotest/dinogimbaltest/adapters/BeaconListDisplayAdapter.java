@@ -1,4 +1,7 @@
-package com.dinotest.dinogimbaltest;
+package com.dinotest.dinogimbaltest.adapters;
+
+import com.dinotest.dinogimbaltest.models.BeaconDiscount;
+import com.dinotest.dinogimbaltest.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;
