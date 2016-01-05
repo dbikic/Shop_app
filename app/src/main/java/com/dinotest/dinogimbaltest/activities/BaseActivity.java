@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -119,6 +120,15 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
                             goToHome.addCategory(Intent.CATEGORY_HOME);
                             goToHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(goToHome);
+                        }
+                    })
+                    .setNeutralButton(getString(R.string.bluetooth_turn_on), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Opens menu to enable bluetooth
+                            Intent intentBluetooth = new Intent();
+                            intentBluetooth.setAction(Settings.ACTION_BLUETOOTH_SETTINGS);
+                            startActivity(intentBluetooth);
                         }
                     })
                     .setMessage(message)

@@ -17,4 +17,8 @@ public class Events {
             return state;
         }
     }
+
+    public static class NFCStateChange {
+
+    }
 }

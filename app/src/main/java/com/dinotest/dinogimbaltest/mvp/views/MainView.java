@@ -5,5 +5,7 @@ package com.dinotest.dinogimbaltest.mvp.views;
  */
 public interface MainView extends BaseView {
 
-    void initUI();
+    void initUIForEnabledNFC();
+
+    void initUIForDisabledNFC();
 }

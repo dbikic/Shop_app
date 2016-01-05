@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.nfc.NfcAdapter;
 
 import de.greenrobot.event.EventBus;
 
@@ -18,6 +19,29 @@ import de.greenrobot.event.EventBus;
 public class ShopApplication extends Application {
 
     protected static ShopApplication instance;
+
+    private final BroadcastReceiver brBluetooth = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1);
+                if (state == BluetoothAdapter.STATE_OFF) {
+                    EventBus.getDefault().post(new Events.BluetoothState(getString(R.string.bluetooth_error)));
+                }
+            }
+        }
+    };
+
+    private final BroadcastReceiver brNFC = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED)) {
+                EventBus.getDefault().post(new Events.NFCStateChange());
+            }
+        }
+    };
 
     public static ShopApplication getInstance() {
         return instance;
@@ -37,29 +61,17 @@ public class ShopApplication extends Application {
     @Override
     public void onTerminate() {
         super.onTerminate();
-        unregisterReceiver(mReceiver);
+        unregisterReceiver(brBluetooth);
+        unregisterReceiver(brNFC);
     }
 
     private void init() {
-        Gimbal.setApiKey(this, "b004f8c0-d82f-4809-8b0c-a3698e0b8d79");
+        Gimbal.setApiKey(this, getString(R.string.gimbal_api_key));
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-        registerReceiver(mReceiver, filter);
+        registerReceiver(brBluetooth, filter);
+        filter = new IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED);
+        registerReceiver(brNFC, filter);
     }
-
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-
-            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
-                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
-                        BluetoothAdapter.ERROR);
-                if (state == BluetoothAdapter.STATE_OFF) {
-                    EventBus.getDefault().post(new Events.BluetoothState(getString(R.string.bluetooth_error)));
-                }
-            }
-        }
-    };
 
 
 }

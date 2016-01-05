@@ -16,8 +16,11 @@
     <string name="getCodeLbl">Ostvari popust</string>
     <string name="ok">OK</string>
     <string name="exit">Izlaz</string>
-    <string name="main_screen_message">Za početak korištenja aplikacije upalite NFC senzor i prislonite mobilni uređaj uz oznaku na početku
-        dućana i krenite u istraživanje popusta!
+    <string name="main_screen_message">Prislonite mobilni uređaj uz oznaku na početku dućana i krenite u istraživanje popusta!
+    </string>
+    <string name="main_screen_nfc_error">Za početak korištenja aplikacije upalite NFC senzor.
     </string>
     <string name="bluetooth_error">Bluetooth je isključen, upalite ga da biste koristili aplikaciju</string>
+    <string name="bluetooth_turn_on">Upali</string>
+    <string name="gimbal_api_key">b004f8c0-d82f-4809-8b0c-a3698e0b8d79</string>
 </resources>
