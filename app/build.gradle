@@ -23,14 +23,14 @@ android {
         }
     }
     packagingOptions {
+        exclude 'META-INF/license.txt'
         exclude 'LICENSE.txt'
-        exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/MANIFEST.MF'
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/notice.txt'
-        exclude 'META-INF/licence.txt'
     }
 }
 
@@ -44,4 +44,6 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     // Butterknife
     compile 'com.jakewharton:butterknife:7.0.1'
+    // Eventbus
+    compile 'de.greenrobot:eventbus:2.4.0'
 }

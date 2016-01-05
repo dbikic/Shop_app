@@ -94,3 +94,14 @@
 -keep class **$$ViewInjector { *; }
 -keepnames class * { @butterknife.InjectView *;}
 #end of Butterknife
+
+#Eventbus
+-keep class de.greenrobot.** { *; }
+-keepclassmembers class ** {
+    public void onEvent*(**);
+    private void onEvent*(**);
+    public void onEventMainThread*(**);
+    private void onEventMainThread*(**);
+
+}
+#end of Eventbus

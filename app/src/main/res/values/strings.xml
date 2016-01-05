@@ -4,7 +4,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_beacon">Set RSSI</string>
-    <string name="seekLbl">RSSI: </string>
+    <string name="rssiLabel">RSSI: %1$s</string>
     <string name="title_activity_shopping">Trgovina</string>
     <string name="title_activity_discount_details">DiscountDetailsActivity</string>
     <string name="allDiscountsLabel">Svi popusti</string>
@@ -15,7 +15,9 @@
     <string name="validUntilLbl">Vrijedi do</string>
     <string name="getCodeLbl">Ostvari popust</string>
     <string name="ok">OK</string>
+    <string name="exit">Izlaz</string>
     <string name="main_screen_message">Za početak korištenja aplikacije upalite NFC senzor i prislonite mobilni uređaj uz oznaku na početku
         dućana i krenite u istraživanje popusta!
     </string>
+    <string name="bluetooth_error">Bluetooth je isključen, upalite ga da biste koristili aplikaciju</string>
 </resources>

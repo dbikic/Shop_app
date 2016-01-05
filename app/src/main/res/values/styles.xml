@@ -5,6 +5,5 @@
         <item name="colorPrimaryDark">#1565C0</item>
         <item name="colorAccent">#E91E63</item>
         <item name="android:windowActionBarOverlay">false</item>
-        <item name="android:windowNoTitle">false</item>
     </style>
 </resources>

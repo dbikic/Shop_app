@@ -10,4 +10,6 @@ public interface BaseView {
     void hideProgress();
 
     void showMessage(String message);
+
+    void showEnableFeature(String message);
 }

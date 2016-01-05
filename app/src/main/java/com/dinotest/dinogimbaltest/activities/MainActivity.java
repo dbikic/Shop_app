@@ -1,6 +1,8 @@
 package com.dinotest.dinogimbaltest.activities;
 
 import com.dinotest.dinogimbaltest.R;
+import com.dinotest.dinogimbaltest.mvp.presenters.MainPresenter;
+import com.dinotest.dinogimbaltest.mvp.presenters.impl.MainPresenterImpl;
 import com.dinotest.dinogimbaltest.mvp.views.MainView;
 
 import android.content.Intent;
@@ -13,20 +15,20 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity implements MainView {
 
-    /**
-     * Toolbar menu.
-     */
-    private Menu toolbarMenu;
+    private MainPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        presenter = new MainPresenterImpl(this);
+        presenter.initUi();
+
     }
+
 
     @Override
     public void initUI() {
@@ -36,7 +38,6 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.toolbarMenu = menu;
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }

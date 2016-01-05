@@ -5,5 +5,5 @@ package com.dinotest.dinogimbaltest.mvp.presenters;
  */
 public interface MainPresenter extends BasePresenter {
 
-    void onCreated();
+    void initUi();
 }
