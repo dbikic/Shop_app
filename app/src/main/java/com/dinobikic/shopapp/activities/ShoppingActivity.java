@@ -1,16 +1,10 @@
 package com.dinobikic.shopapp.activities;
 
 import com.dinobikic.shopapp.R;
-import com.dinobikic.shopapp.ShopApplication;
 import com.dinobikic.shopapp.adapters.BeaconListDisplayAdapter;
 import com.dinobikic.shopapp.models.BeaconDiscount;
 import com.dinobikic.shopapp.utils.Globals;
 import com.dinobikic.shopapp.utils.JSONParser;
-import com.gimbal.android.Beacon;
-import com.gimbal.android.BeaconEventListener;
-import com.gimbal.android.BeaconManager;
-import com.gimbal.android.BeaconSighting;
-import com.gimbal.android.Gimbal;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -41,10 +35,6 @@ import java.util.List;
 
 
 public class ShoppingActivity extends Activity {
-
-    private BeaconEventListener beaconEventListener;
-
-    private BeaconManager beaconManager;
 
     private static final String RSSIKEY = "rssiKey";
 
@@ -119,8 +109,6 @@ public class ShoppingActivity extends Activity {
 
         // dinonfc://dino/shop/X
         shopName = shopIntent.getDataString().substring(20);
-
-        Gimbal.setApiKey(ShopApplication.getInstance(), getString(R.string.gimbal_api_key));
 
 /*
         GetConfig gc = new GetConfig();
@@ -286,32 +274,23 @@ public class ShoppingActivity extends Activity {
             rssi = -50;
         }
 
-        beaconManager = new BeaconManager();
-        beaconEventListener = new BeaconEventListener() {
 
-            @Override
-            public void onBeaconSighting(BeaconSighting beaconSighting) {
-                super.onBeaconSighting(beaconSighting);
+//                if (beaconSighting.getRSSI() > rssi) {
+//                    Beacon foundBeacon = beaconSighting.getBeacon();
+//
+//                    for (int i = 0; i < beaconDiscountList.size(); i++) {
+//
+//                        if (foundBeacon.getIdentifier().equals(beaconDiscountList.get(i).getId())) {
+//                            if (!beaconDiscountList.get(i).getSeen()) {
+//                                seenBeacons.add(beaconDiscountList.get(i));
+//                                beaconDiscountList.get(i).setSeen();
+//
+//                                adapter.notifyDataSetChanged();
+//                            }
+//                        }
+//                    }
+//                }
 
-                if (beaconSighting.getRSSI() > rssi) {
-                    Beacon foundBeacon = beaconSighting.getBeacon();
-
-                    for (int i = 0; i < beaconDiscountList.size(); i++) {
-
-                        if (foundBeacon.getIdentifier().equals(beaconDiscountList.get(i).getId())) {
-                            if (!beaconDiscountList.get(i).getSeen()) {
-                                seenBeacons.add(beaconDiscountList.get(i));
-                                beaconDiscountList.get(i).setSeen();
-
-                                adapter.notifyDataSetChanged();
-                            }
-                        }
-                    }
-                }
-            }
-        };
-        beaconManager.addListener(beaconEventListener);
-        beaconManager.startListening();
     }
 
 
@@ -335,7 +314,6 @@ public class ShoppingActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        beaconManager.stopListening();
         finish();
     }
 

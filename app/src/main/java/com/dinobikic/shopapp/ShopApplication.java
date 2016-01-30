@@ -1,16 +1,16 @@
 package com.dinobikic.shopapp;
 
 import com.dinobikic.shopapp.utils.Events;
-import com.facebook.stetho.Stetho;
-import com.gimbal.android.Gimbal;
 
 import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
+import android.widget.Toast;
 
 import de.greenrobot.event.EventBus;
 
@@ -44,6 +44,18 @@ public class ShopApplication extends Application {
         }
     };
 
+    private final BroadcastReceiver btReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                // rssi: intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
+                Toast.makeText(ShopApplication.this, "Found device " + device.getName(), Toast.LENGTH_SHORT).show();
+
+            }
+        }
+    };
+
     public static ShopApplication getInstance() {
         return instance;
     }
@@ -56,12 +68,7 @@ public class ShopApplication extends Application {
     public void onCreate() {
         super.onCreate();
         setInstance(this);
-        Stetho.initialize(
-                Stetho.newInitializerBuilder(this)
-                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-                        .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
-                        .build());
-        init();
+        initReceivers();
     }
 
     @Override
@@ -71,12 +78,19 @@ public class ShopApplication extends Application {
         unregisterReceiver(brNFC);
     }
 
-    private void init() {
-        Gimbal.setApiKey(this, getString(R.string.gimbal_api_key));
+    private void initReceivers() {
+
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(brBluetooth, filter);
+
         filter = new IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED);
         registerReceiver(brNFC, filter);
+
+        filter = new IntentFilter();
+        filter.addAction(BluetoothDevice.ACTION_FOUND);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        registerReceiver(btReceiver, filter);
     }
 
 

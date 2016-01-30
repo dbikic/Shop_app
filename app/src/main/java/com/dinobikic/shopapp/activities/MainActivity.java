@@ -6,8 +6,10 @@ import com.dinobikic.shopapp.mvp.presenters.impl.MainPresenterImpl;
 import com.dinobikic.shopapp.mvp.views.MainView;
 import com.dinobikic.shopapp.utils.Events;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,7 +40,9 @@ public class MainActivity extends BaseActivity implements MainView {
 
         presenter = new MainPresenterImpl(this);
         presenter.checkNFC();
+        initListener();
     }
+
 
     @Override
     public void initUIForEnabledNFC() {
@@ -82,4 +86,17 @@ public class MainActivity extends BaseActivity implements MainView {
     public void onEventMainThread(Events.NFCStateChange event) {
         presenter.checkNFC();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initListener();
+    }
+
+    private void initListener() {
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        Log.d("Is Discovery started: ", "" + bluetoothAdapter.startDiscovery());
+
+    }
+
 }

@@ -5,10 +5,6 @@ import com.dinobikic.shopapp.callbacks.CustomSeekBarChangeListener;
 import com.dinobikic.shopapp.mvp.presenters.ConfigPresenter;
 import com.dinobikic.shopapp.mvp.presenters.impl.ConfigPresenterImpl;
 import com.dinobikic.shopapp.mvp.views.ConfigView;
-import com.gimbal.android.Beacon;
-import com.gimbal.android.BeaconEventListener;
-import com.gimbal.android.BeaconManager;
-import com.gimbal.android.BeaconSighting;
 
 import android.os.Bundle;
 import android.widget.SeekBar;
@@ -33,27 +29,26 @@ public class ConfigActivity extends BaseActivity implements ConfigView {
     @Bind(R.id.sbRssi)
     SeekBar sbRssi;
 
-    private BeaconManager beaconManager;
 
     private ConfigPresenter presenter;
 
     private int ulazak = 0;
 
-    private BeaconEventListener beaconListener = new BeaconEventListener() {
-        @Override
-        public void onBeaconSighting(BeaconSighting beaconSighting) {
-            super.onBeaconSighting(beaconSighting);
-            if (beaconSighting.getRSSI() > presenter.getRssi()) {
-                Beacon moj = beaconSighting.getBeacon();
-                ulazak++;
-                tvBeaconInfo.setText(
-                        "ID: " + moj.getName() + "\nRSSI: " + beaconSighting.getRSSI() + "\nUlazaka: " + String.valueOf(ulazak));
-            } else {
-                tvBeaconInfo.setText("RSSI: " + beaconSighting.getRSSI() + ", manji od\nzadanog: " + presenter.getRssi());
-            }
-
-        }
-    };
+//    private BeaconEventListener beaconListener = new BeaconEventListener() {
+//        @Override
+//        public void onBeaconSighting(BeaconSighting beaconSighting) {
+//            super.onBeaconSighting(beaconSighting);
+//            if (beaconSighting.getRSSI() > presenter.getRssi()) {
+//                Beacon moj = beaconSighting.getBeacon();
+//                ulazak++;
+//                tvBeaconInfo.setText(
+//                        "ID: " + moj.getName() + "\nRSSI: " + beaconSighting.getRSSI() + "\nUlazaka: " + String.valueOf(ulazak));
+//            } else {
+//                tvBeaconInfo.setText("RSSI: " + beaconSighting.getRSSI() + ", manji od\nzadanog: " + presenter.getRssi());
+//            }
+//
+//        }
+//    };
 
     private SeekBar.OnSeekBarChangeListener sbRssiListener = new CustomSeekBarChangeListener() {
         @Override
@@ -74,9 +69,6 @@ public class ConfigActivity extends BaseActivity implements ConfigView {
 
     private void initUi() {
         sbRssi.setOnSeekBarChangeListener(sbRssiListener);
-        beaconManager = new BeaconManager();
-        beaconManager.addListener(beaconListener);
-        beaconManager.startListening();
     }
 
     @Override
