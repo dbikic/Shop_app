@@ -9,11 +9,8 @@ public class DisplayHelper {
 
     }
 
-    public static String getPercentage(String oldPrice, String newPrice) {
-        float oldP = Float.parseFloat(oldPrice);
-        float newP = Float.parseFloat(newPrice);
-        float percentage = (newP / oldP) * 100;
-
+    public static String getPercentage(double oldPrice, double newPrice) {
+        double percentage = (newPrice / oldPrice) * 100;
         return String.format("%.02f", 100 - percentage) + " %";
     }
 }

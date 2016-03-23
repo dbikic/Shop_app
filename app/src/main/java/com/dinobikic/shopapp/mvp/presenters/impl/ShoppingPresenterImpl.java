@@ -1,14 +1,16 @@
 package com.dinobikic.shopapp.mvp.presenters.impl;
 
+import com.dinobikic.shopapp.R;
 import com.dinobikic.shopapp.interfaces.GetBeaconsCallback;
+import com.dinobikic.shopapp.models.StoreConfiguration;
 import com.dinobikic.shopapp.mvp.interactors.ShoppingInteractor;
 import com.dinobikic.shopapp.mvp.interactors.impl.ShoppingInteractorImpl;
 import com.dinobikic.shopapp.mvp.presenters.ShoppingPresenter;
 import com.dinobikic.shopapp.mvp.views.ShoppingView;
+import com.dinobikic.shopapp.utils.StringUtils;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
-import android.util.Log;
 
 /**
  * Created by dino on 23/03/16.
@@ -21,6 +23,8 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
 
     private String shopName;
 
+    StoreConfiguration storeConfiguration;
+
     public ShoppingPresenterImpl(ShoppingView view) {
         this.view = view;
         this.interactor = new ShoppingInteractorImpl();
@@ -32,6 +36,7 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
         view.initUI();
         // dinonfc://dino/shop/X
         shopName = intent.getDataString().substring(20);
+        shopName = "2";
 
         BluetoothAdapter btAdapter;
         btAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -53,14 +58,20 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
         interactor.getBeacons(shopName, new GetBeaconsCallback() {
             @Override
             public void onError() {
-                view.showMessage("ERROR");
+                view.hideProgress();
+                view.showMessage(StringUtils.getString(R.string.error));
             }
 
             @Override
-            public void onSuccess(String json) {
-                view.showMessage(json);
-                Log.d("qwe", json);
+            public void onSuccess(StoreConfiguration response) {
+                view.hideProgress();
+                if (response != null) {
+                    storeConfiguration = response;
+                    view.setStoreTitle(storeConfiguration.getStore());
+                    view.showActiveDiscounts(storeConfiguration.getBeaconDiscounts());
+                }
             }
+
         });
     }
 

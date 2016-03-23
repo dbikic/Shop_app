@@ -18,13 +18,4 @@ public class ConfigInteractorImpl implements ConfigInteractor {
         return PreferncesUtils.getRssi();
     }
 
-    @Override
-    public void cancel() {
-
-    }
-
-    @Override
-    public void reset() {
-
-    }
 }

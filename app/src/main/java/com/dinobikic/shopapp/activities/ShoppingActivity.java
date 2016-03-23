@@ -2,13 +2,12 @@ package com.dinobikic.shopapp.activities;
 
 import com.dinobikic.shopapp.R;
 import com.dinobikic.shopapp.adapters.BeaconListDisplayAdapter;
-import com.dinobikic.shopapp.models.BeaconDiscount;
+import com.dinobikic.shopapp.models.BeaconDiscount2;
 import com.dinobikic.shopapp.mvp.presenters.ShoppingPresenter;
 import com.dinobikic.shopapp.mvp.presenters.impl.ShoppingPresenterImpl;
 import com.dinobikic.shopapp.mvp.views.ShoppingView;
 import com.dinobikic.shopapp.utils.Constants;
 
-import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +17,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,26 +29,21 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
 
     private static final String RSSIKEY = "rssiKey";
 
-    @Bind(R.id.tvShop)
-    TextView tvShop;
+    @Bind(R.id.tv_shop_title)
+    TextView tvShopTitle;
 
-    @Bind(R.id.lvBeacons)
-    ListView lvBeacons;
-
-    private int rssi;
+    @Bind(R.id.lv_discounts)
+    ListView lvDiscounts;
 
     private SharedPreferences sharedpreferences;
 
-    private BluetoothAdapter btAdapter;
+    int rssi;
 
     final static int REQUEST_ENABLE_BT = 1;
 
-    private List<BeaconDiscount> beaconDiscountList, seenBeacons;
+    private List<BeaconDiscount2> beaconDiscountList, seenBeacons;
 
     private BeaconListDisplayAdapter adapter;
-
-    // Progress Dialog
-    private ProgressDialog pDialog;
 
     private Constants globalValues;
 
@@ -73,42 +66,29 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
     @Override
     public void initUI() {
         globalValues = new Constants();
-
         beaconDiscountList = new ArrayList<>();
         seenBeacons = new ArrayList<>();
-
         adapter = new BeaconListDisplayAdapter(this, R.layout.beacons_list_item, seenBeacons);
-
-        lvBeacons.setAdapter(adapter);
-        lvBeacons.setOnItemClickListener(beaconListClick);
-
-//        Intent shopIntent = getIntent();
-
-        // dinonfc://dino/shop/X
-/*
-        GetConfig gc = new GetConfig();
-        gc.execute();
-*/
-        btAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (btAdapter == null) {
-            Toast.makeText(getApplication(), "Bluetooth nije podržan!", Toast.LENGTH_SHORT).show();
-            finish();
-        } else {
-            if (btAdapter.isEnabled()) {
-                presenter.getBeaconList();
-//                GetConfig gc = new GetConfig();
-//                gc.execute();
-            } else {
-                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-            }
-        }
+        lvDiscounts.setAdapter(adapter);
+        lvDiscounts.setOnItemClickListener(beaconListClick);
     }
 
     @Override
     public void requestEnableBluetooth() {
         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+    }
+
+    @Override
+    public void setStoreTitle(String storeTitle) {
+        tvShopTitle.setText(storeTitle);
+    }
+
+    @Override
+    public void showActiveDiscounts(ArrayList<BeaconDiscount2> beacons) {
+        if (beacons != null && beacons.size() != 0) {
+            adapter.addAll(beacons);
+        }
     }
 
     //endregion
@@ -119,16 +99,10 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
 
         if (requestCode == REQUEST_ENABLE_BT) {
             if (resultCode == RESULT_OK) {
-                showMessage("Bluetooth upaljen!");
+                presenter.getBeaconList();
             } else {
-                showMessage("Bez bluetooth-a aplikacija ne radi...");
+                showMessage(getString(R.string.without_bluetooth_app_doesnt_work));
             }
-        }
-
-        if (btAdapter.isEnabled()) {
-            presenter.getBeaconList();
-//            GetConfig gc = new GetConfig();
-//            gc.execute();
         }
     }
 
@@ -181,10 +155,6 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
     @Override
     public void onBackPressed() {
         finish();
-    }
-
-    public void changeTitle(Context c, String newTitle) {
-
     }
 
 }

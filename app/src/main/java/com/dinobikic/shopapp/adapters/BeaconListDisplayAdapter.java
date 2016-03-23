@@ -1,7 +1,7 @@
 package com.dinobikic.shopapp.adapters;
 
-import com.dinobikic.shopapp.models.BeaconDiscount;
 import com.dinobikic.shopapp.R;
+import com.dinobikic.shopapp.models.BeaconDiscount2;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,12 +15,12 @@ import java.util.List;
 /**
  * Created by root on 15.06.15..
  */
-public class BeaconListDisplayAdapter extends ArrayAdapter<BeaconDiscount> {
+public class BeaconListDisplayAdapter extends ArrayAdapter<BeaconDiscount2> {
 
-    private List<BeaconDiscount> beacons;
+    private List<BeaconDiscount2> beacons;
     Context currentContext;
 
-    public BeaconListDisplayAdapter(Context context, int resource, List<BeaconDiscount> objects) {
+    public BeaconListDisplayAdapter(Context context, int resource, List<BeaconDiscount2> objects) {
         super(context, resource, objects);
 
         this.beacons = objects;
@@ -35,7 +35,7 @@ public class BeaconListDisplayAdapter extends ArrayAdapter<BeaconDiscount> {
             convertView = vi.inflate(R.layout.beacons_list_item, null);
         }
 
-        BeaconDiscount currBeacon = this.beacons.get(position);
+        BeaconDiscount2 currBeacon = this.beacons.get(position);
 
         if(currBeacon != null){
             TextView tvDiscountName = (TextView) convertView.findViewById(R.id.tvDiscountName);
@@ -43,13 +43,13 @@ public class BeaconListDisplayAdapter extends ArrayAdapter<BeaconDiscount> {
             TextView tvNewPrice = (TextView) convertView.findViewById(R.id.tvNewPrice);
 
             if(tvDiscountName!= null){
-                tvDiscountName.setText(currBeacon.getDiscount());
+                tvDiscountName.setText(currBeacon.getDiscountName());
             }
             if(tvOldPrice!= null){
-                tvOldPrice.setText(currBeacon.getOldPrice());
+                tvOldPrice.setText(String.valueOf(currBeacon.getDiscountOldPrice()));
             }
             if(tvNewPrice!= null){
-                tvNewPrice.setText(currBeacon.getNewPrice());
+                tvNewPrice.setText(String.valueOf(currBeacon.getDiscountNewPrice()));
             }
         }
 

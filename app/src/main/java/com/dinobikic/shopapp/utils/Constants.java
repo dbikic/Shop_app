@@ -1,7 +1,7 @@
 package com.dinobikic.shopapp.utils;
 
 
-import com.dinobikic.shopapp.models.BeaconDiscount;
+import com.dinobikic.shopapp.models.BeaconDiscount2;
 
 import java.util.Locale;
 
@@ -9,7 +9,7 @@ public final class Constants {
 
     public static String serverUrl = "http://cons.riteh.hr/nfc/api/";
 
-    public static BeaconDiscount currentSelectedBeacon ;
+    public static BeaconDiscount2 currentSelectedBeacon ;
 
     public Constants() {
     }
@@ -32,35 +32,12 @@ public final class Constants {
         return serverUrl + "getCode.php";
     }
 
-    public void setCurrentBeacon(BeaconDiscount beacon){
+    public void setCurrentBeacon(BeaconDiscount2 beacon){
         currentSelectedBeacon = beacon;
     }
 
-    public BeaconDiscount getCurrentSelectedBeacon(){
+    public BeaconDiscount2 getCurrentSelectedBeacon(){
         return currentSelectedBeacon;
     }
-    
-    // region API tags
-    public static final String STATUS_TAG = "status";
 
-    public static final String DISCOUNT_ID_TAG = "discount_id";
-
-    public static final String STORE_TAG = "store";
-
-    public static final String BEACON_ID = "factory_id";
-
-    public static final String DISCOUNT_TAG = "discountName";
-
-    public static final String PRODUCT_TAG = "discountProduct";
-
-    public static final String NEW_PRICE_TAG = "discountNewPrice";
-
-    public static final String OLD_PRICE_TAG = "discountOldPrice";
-
-    public static final String VALID_FROM_TAG = "discountValidFrom";
-
-    public static final String VALID_TO_TAG = "discountValidTo";
-
-    public static final String CODE_TAG = "code";
-    //endregion
 }
