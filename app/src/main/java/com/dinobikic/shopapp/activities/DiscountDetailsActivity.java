@@ -3,7 +3,7 @@ package com.dinobikic.shopapp.activities;
 import com.dinobikic.shopapp.R;
 import com.dinobikic.shopapp.models.BeaconDiscount;
 import com.dinobikic.shopapp.utils.DisplayHelper;
-import com.dinobikic.shopapp.utils.Globals;
+import com.dinobikic.shopapp.utils.Constants;
 import com.dinobikic.shopapp.utils.JSONParser;
 
 import org.apache.http.NameValuePair;
@@ -34,7 +34,7 @@ public class DiscountDetailsActivity extends Activity {
 
     private BeaconDiscount beaconDiscount;
 
-    private Globals globalValues;
+    private Constants globalValues;
 
     private ProgressDialog pDialog;
 
@@ -56,7 +56,7 @@ public class DiscountDetailsActivity extends Activity {
 
     public void init() {
 
-        globalValues = new Globals();
+        globalValues = new Constants();
         beaconDiscount = globalValues.getCurrentSelectedBeacon();
 
         TextView tvProduct = (TextView) findViewById(R.id.tvProduct);

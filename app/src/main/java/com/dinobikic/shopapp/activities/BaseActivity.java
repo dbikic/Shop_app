@@ -138,6 +138,11 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
 
     @Override
+    public void finishActivity() {
+        finish();
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         this.finish();

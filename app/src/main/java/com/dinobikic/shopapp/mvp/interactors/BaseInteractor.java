@@ -5,7 +5,4 @@ package com.dinobikic.shopapp.mvp.interactors;
  */
 public interface BaseInteractor {
 
-    void cancel();
-
-    void reset();
 }

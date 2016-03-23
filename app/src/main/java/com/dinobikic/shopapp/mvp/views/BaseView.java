@@ -12,4 +12,6 @@ public interface BaseView {
     void showMessage(String message);
 
     void showEnableFeature(String message);
+
+    void finishActivity();
 }
