@@ -17,4 +17,6 @@ public interface ShoppingView extends BaseView {
 
     void showActiveDiscounts(ArrayList<BeaconDiscount2> beacons);
 
+    void showDiscount(BeaconDiscount2 beaconDiscount);
+
 }

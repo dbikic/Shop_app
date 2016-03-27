@@ -44,4 +44,13 @@ public class StoreConfiguration implements Serializable {
     public ArrayList<BeaconDiscount2> getBeaconDiscounts() {
         return beaconDiscounts;
     }
+
+    public BeaconDiscount2 getDiscountFromBeaconId(String beaconId) {
+        for (BeaconDiscount2 beaconDiscount : beaconDiscounts) {
+            if (beaconDiscount.getBeaconFactoryId().equals(beaconId)) {
+                return beaconDiscount;
+            }
+        }
+        return null;
+    }
 }

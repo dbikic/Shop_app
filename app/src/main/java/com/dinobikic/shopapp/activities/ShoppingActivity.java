@@ -1,7 +1,7 @@
 package com.dinobikic.shopapp.activities;
 
 import com.dinobikic.shopapp.R;
-import com.dinobikic.shopapp.adapters.BeaconListDisplayAdapter;
+import com.dinobikic.shopapp.adapters.DiscountsAdapter;
 import com.dinobikic.shopapp.models.BeaconDiscount2;
 import com.dinobikic.shopapp.mvp.presenters.ShoppingPresenter;
 import com.dinobikic.shopapp.mvp.presenters.impl.ShoppingPresenterImpl;
@@ -23,6 +23,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class ShoppingActivity extends BaseActivity implements ShoppingView {
@@ -35,6 +36,9 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
     @Bind(R.id.lv_discounts)
     ListView lvDiscounts;
 
+    @Bind(R.id.empty_state)
+    View emptyListView;
+
     private SharedPreferences sharedpreferences;
 
     int rssi;
@@ -43,7 +47,7 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
 
     private List<BeaconDiscount2> beaconDiscountList, seenBeacons;
 
-    private BeaconListDisplayAdapter adapter;
+    private DiscountsAdapter adapter;
 
     private Constants globalValues;
 
@@ -68,8 +72,9 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
         globalValues = new Constants();
         beaconDiscountList = new ArrayList<>();
         seenBeacons = new ArrayList<>();
-        adapter = new BeaconListDisplayAdapter(this, R.layout.beacons_list_item, seenBeacons);
+        adapter = new DiscountsAdapter(this, R.layout.beacons_list_item, seenBeacons);
         lvDiscounts.setAdapter(adapter);
+        lvDiscounts.setEmptyView(emptyListView);
         lvDiscounts.setOnItemClickListener(beaconListClick);
     }
 
@@ -89,6 +94,11 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
         if (beacons != null && beacons.size() != 0) {
             adapter.addAll(beacons);
         }
+    }
+
+    @Override
+    public void showDiscount(BeaconDiscount2 beaconDiscount) {
+        adapter.add(beaconDiscount);
     }
 
     //endregion
@@ -150,6 +160,20 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
             });
         }
     };
+
+    int i = 0;
+    @OnClick(R.id.tv_shop_title)
+    public void addBeacon() {
+        if (i == 0) {
+            presenter.onBeaconDiscovered("qwe");
+            i++;
+        } else if (i == 1) {
+            presenter.onBeaconDiscovered("qwe2");
+            i++;
+        } else if (i == 2) {
+            presenter.onBeaconDiscovered("qwe3");
+        }
+    }
 
 
     @Override

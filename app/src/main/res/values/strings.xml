@@ -6,8 +6,8 @@
     <string name="title_activity_beacon">Set RSSI</string>
     <string name="rssiLabel">RSSI: %1$s</string>
     <string name="title_activity_shopping">Trgovina</string>
-    <string name="title_activity_discount_details">DiscountDetailsActivity</string>
-    <string name="allDiscountsLabel">All discounts</string>
+    <string name="title_activity_discount_details">Discount details</string>
+    <string name="discovered_discounts">Discovered discounts:</string>
     <string name="productLbl">Proizvod</string>
     <string name="oldpriceLbl">Stara cijena</string>
     <string name="newPriceLbl">Nova cijena</string>
@@ -16,8 +16,7 @@
     <string name="getCodeLbl">Ostvari popust</string>
     <string name="ok">OK</string>
     <string name="exit">Izlaz</string>
-    <string name="main_screen_message">Prislonite mobilni uređaj uz oznaku na početku dućana i krenite u istraživanje popusta!
-    </string>
+    <string name="main_screen_message">Prislonite mobilni uređaj uz oznaku na početku dućana i krenite u istraživanje popusta!</string>
     <string name="main_screen_nfc_error">Za početak korištenja aplikacije upalite NFC senzor.
     </string>
     <string name="bluetooth_error">Bluetooth je isključen, upalite ga da biste koristili aplikaciju</string>
@@ -25,4 +24,12 @@
     <string name="gimbal_api_key">b004f8c0-d82f-4809-8b0c-a3698e0b8d79</string>
     <string name="without_bluetooth_app_doesnt_work">Bez bluetooth-a aplikacija ne radi...</string>
     <string name="error">Error</string>
+    <string name="there_are_no_discounts_available">There are no discounts available.</string>
+    <string name="product">Product</string>
+    <string name="old_price">Old price</string>
+    <string name="new_price">New price</string>
+    <string name="discount">Discount</string>
+    <string name="valid_to">Valid to</string>
+    <string name="get_the_discount_code">Get the discount code</string>
+    <string name="discount_code">Discount code</string>
 </resources>

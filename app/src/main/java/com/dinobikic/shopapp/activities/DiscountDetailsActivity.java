@@ -3,20 +3,47 @@ package com.dinobikic.shopapp.activities;
 import com.dinobikic.shopapp.R;
 import com.dinobikic.shopapp.models.BeaconDiscount2;
 import com.dinobikic.shopapp.utils.Constants;
-import com.dinobikic.shopapp.utils.DisplayHelper;
 import com.dinobikic.shopapp.utils.JSONParser;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class DiscountDetailsActivity extends Activity {
 
-    private TextView tvCode;
+    public static final String DISCOUNT_TAG = "discount";
+
+    @Bind(R.id.tv_product)
+    TextView tvProduct;
+
+    @Bind(R.id.tv_old_price)
+    TextView tvOldPrice;
+
+    @Bind(R.id.tv_new_price)
+    TextView tvNewPrice;
+
+    @Bind(R.id.tv_discount)
+    TextView tvDiscount;
+
+    @Bind(R.id.tv_valid_to)
+    TextView tvValidTo;
+
+    @Bind(R.id.btn_discount_code)
+    Button btnDiscountCode;
+
+    @Bind(R.id.tv_code)
+    TextView tvCode;
+
+    @Bind(R.id.code_wrapper)
+    LinearLayout codeWrapper;
 
     private Button btnGetCode;
 
@@ -33,11 +60,17 @@ public class DiscountDetailsActivity extends Activity {
     private final String CODE_TAG = "code";
 
 
+    public static final Intent buildIntent(Context context, BeaconDiscount2 discount) {
+        Intent intent = new Intent(context, DiscountDetailsActivity.class);
+        intent.putExtra(DISCOUNT_TAG, discount);
+        return intent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_discount_details);
+        ButterKnife.bind(this);
 
         init();
     }
@@ -47,39 +80,40 @@ public class DiscountDetailsActivity extends Activity {
         globalValues = new Constants();
         beaconDiscount = globalValues.getCurrentSelectedBeacon();
 
-        TextView tvProduct = (TextView) findViewById(R.id.tvProduct);
-        TextView tvOldPrice = (TextView) findViewById(R.id.tvOldPrice);
-        TextView tvNewPrice = (TextView) findViewById(R.id.tvNewPrice);
-        TextView tvDiscount = (TextView) findViewById(R.id.tvDiscount);
-        TextView tvDiscountPercentage = (TextView) findViewById(R.id.tvDiscountPercentage);
-        TextView tvValidUntil = (TextView) findViewById(R.id.tvValidUntil);
-        tvCode = (TextView) findViewById(R.id.tvCode);
-
-        tvProduct.setText(beaconDiscount.getDiscountProduct());
-        tvOldPrice.setText(beaconDiscount.getDiscountOldPrice() + " kn");
-        tvNewPrice.setText(beaconDiscount.getDiscountNewPrice() + " kn");
-        tvDiscountPercentage.setText(DisplayHelper.getPercentage(beaconDiscount.getDiscountOldPrice(), beaconDiscount.getDiscountNewPrice()));
-        tvDiscount.setText(beaconDiscount.getDiscountName());
-        tvValidUntil.setText(beaconDiscount.getDiscountValidTo());
-
-        if (beaconDiscount.getCode().equals("0")) {
-
-            btnGetCode = (Button) findViewById(R.id.btnGetCode);
-            btnGetCode.setVisibility(View.VISIBLE);
-            btnGetCode.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-//                    GetCode gc = new GetCode();
-//                    gc.execute();
-                }
-            });
-
-        } else {
-            tvCode.setText("Vaš kod za popust:\n" + beaconDiscount.getCode());
-            tvCode.setVisibility(View.VISIBLE);
-        }
-
     }
+
+//        TextView tvProduct = (TextView) findViewById(R.id.tvProduct);
+//        TextView tvOldPrice = (TextView) findViewById(R.id.tvOldPrice);
+//        TextView tvNewPrice = (TextView) findViewById(R.id.tvNewPrice);
+//        TextView tvDiscount = (TextView) findViewById(R.id.tvDiscount);
+//        TextView tvDiscountPercentage = (TextView) findViewById(R.id.tvDiscountPercentage);
+//        TextView tvValidUntil = (TextView) findViewById(R.id.tvValidUntil);
+//        tvCode = (TextView) findViewById(R.id.tvCode);
+//
+//        tvProduct.setText(beaconDiscount.getDiscountProduct());
+//        tvOldPrice.setText(beaconDiscount.getDiscountOldPrice() + " kn");
+//        tvNewPrice.setText(beaconDiscount.getDiscountNewPrice() + " kn");
+//        tvDiscountPercentage.setText(StringUtils.getPercentage(beaconDiscount.getDiscountOldPrice(), beaconDiscount.getDiscountNewPrice()));
+//        tvDiscount.setText(beaconDiscount.getDiscountName());
+//        tvValidUntil.setText(beaconDiscount.getDiscountValidTo());
+//
+//        if (beaconDiscount.getCode().equals("0")) {
+//
+//            btnGetCode = (Button) findViewById(R.id.btnGetCode);
+//            btnGetCode.setVisibility(View.VISIBLE);
+//            btnGetCode.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+////                    GetCode gc = new GetCode();
+////                    gc.execute();
+//                }
+//            });
+//
+//        } else {
+//            tvCode.setText("Vaš kod za popust:\n" + beaconDiscount.getCode());
+//            tvCode.setVisibility(View.VISIBLE);
+//        }
+//
 
 //    private class GetCode extends AsyncTask<Void, Void, Void> {
 //

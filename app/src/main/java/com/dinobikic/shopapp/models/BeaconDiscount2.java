@@ -2,10 +2,12 @@ package com.dinobikic.shopapp.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by dino on 23/03/16.
  */
-public class BeaconDiscount2 {
+public class BeaconDiscount2 implements Serializable {
 
     @SerializedName("discount_id")
     int discountId;

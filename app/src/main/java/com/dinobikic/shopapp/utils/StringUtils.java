@@ -16,4 +16,8 @@ public class StringUtils {
         return ShopApplication.getInstance().getString(stringRes);
     }
 
+    public static String getPercentage(double oldPrice, double newPrice) {
+        double percentage = (newPrice / oldPrice) * 100;
+        return Math.round(100 - percentage) + "%";
+    }
 }

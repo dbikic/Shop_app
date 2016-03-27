@@ -10,4 +10,6 @@ public interface ShoppingPresenter extends BasePresenter {
     void onCreated(Intent intent);
 
     void getBeaconList();
+
+    void onBeaconDiscovered(String beaconId);
 }
