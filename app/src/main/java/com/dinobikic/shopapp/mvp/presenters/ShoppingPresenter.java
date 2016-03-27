@@ -12,4 +12,8 @@ public interface ShoppingPresenter extends BasePresenter {
     void getBeaconList();
 
     void onBeaconDiscovered(String beaconId);
+
+    void onDiscountSelected(int position);
+
+    void onCodeReceived(String code);
 }

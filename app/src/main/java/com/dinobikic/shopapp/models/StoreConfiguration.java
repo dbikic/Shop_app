@@ -23,7 +23,7 @@ public class StoreConfiguration implements Serializable {
     String storeId;
 
     @SerializedName("beacons")
-    ArrayList<BeaconDiscount2> beaconDiscounts;
+    ArrayList<Discount> beaconDiscounts;
 
     public boolean isStatus() {
         return status;
@@ -41,12 +41,12 @@ public class StoreConfiguration implements Serializable {
         return storeId;
     }
 
-    public ArrayList<BeaconDiscount2> getBeaconDiscounts() {
+    public ArrayList<Discount> getBeaconDiscounts() {
         return beaconDiscounts;
     }
 
-    public BeaconDiscount2 getDiscountFromBeaconId(String beaconId) {
-        for (BeaconDiscount2 beaconDiscount : beaconDiscounts) {
+    public Discount getDiscountFromBeaconId(String beaconId) {
+        for (Discount beaconDiscount : beaconDiscounts) {
             if (beaconDiscount.getBeaconFactoryId().equals(beaconId)) {
                 return beaconDiscount;
             }

@@ -1,6 +1,6 @@
 package com.dinobikic.shopapp.mvp.views;
 
-import com.dinobikic.shopapp.models.BeaconDiscount2;
+import com.dinobikic.shopapp.models.Discount;
 
 import java.util.ArrayList;
 
@@ -15,8 +15,10 @@ public interface ShoppingView extends BaseView {
 
     void setStoreTitle(String store);
 
-    void showActiveDiscounts(ArrayList<BeaconDiscount2> beacons);
+    void showActiveDiscounts(ArrayList<Discount> beacons);
 
-    void showDiscount(BeaconDiscount2 beaconDiscount);
+    void showDiscount(Discount beaconDiscount);
+
+    void navigateToDiscountDetails(Discount discount);
 
 }

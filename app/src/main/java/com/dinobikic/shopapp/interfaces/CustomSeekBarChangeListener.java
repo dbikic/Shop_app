@@ -1,4 +1,4 @@
-package com.dinobikic.shopapp.callbacks;
+package com.dinobikic.shopapp.interfaces;
 
 import android.widget.SeekBar;
 

@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by dino on 23/03/16.
  */
-public class BeaconDiscount2 implements Serializable {
+public class Discount implements Serializable {
 
     @SerializedName("discount_id")
     int discountId;
@@ -71,4 +71,13 @@ public class BeaconDiscount2 implements Serializable {
     public String getCode() {
         return code;
     }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public boolean isDiscountActivated() {
+        return !getCode().equals("0");
+    }
+
 }

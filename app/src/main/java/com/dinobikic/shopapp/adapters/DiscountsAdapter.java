@@ -1,7 +1,7 @@
 package com.dinobikic.shopapp.adapters;
 
 import com.dinobikic.shopapp.R;
-import com.dinobikic.shopapp.models.BeaconDiscount2;
+import com.dinobikic.shopapp.models.Discount;
 import com.dinobikic.shopapp.utils.StringUtils;
 
 import android.content.Context;
@@ -16,13 +16,13 @@ import java.util.List;
 /**
  * Created by root on 15.06.15..
  */
-public class DiscountsAdapter extends ArrayAdapter<BeaconDiscount2> {
+public class DiscountsAdapter extends ArrayAdapter<Discount> {
 
-    private List<BeaconDiscount2> beacons;
+    private List<Discount> beacons;
 
     Context currentContext;
 
-    public DiscountsAdapter(Context context, int resource, List<BeaconDiscount2> objects) {
+    public DiscountsAdapter(Context context, int resource, List<Discount> objects) {
         super(context, resource, objects);
 
 
@@ -38,7 +38,7 @@ public class DiscountsAdapter extends ArrayAdapter<BeaconDiscount2> {
             convertView = vi.inflate(R.layout.beacons_list_item, null);
         }
 
-        BeaconDiscount2 discount = this.beacons.get(position);
+        Discount discount = this.beacons.get(position);
 
         if (discount != null) {
             TextView tvDiscount = (TextView) convertView.findViewById(R.id.tv_discount);

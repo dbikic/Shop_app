@@ -1,7 +1,7 @@
 package com.dinobikic.shopapp.activities;
 
 import com.dinobikic.shopapp.R;
-import com.dinobikic.shopapp.callbacks.CustomSeekBarChangeListener;
+import com.dinobikic.shopapp.interfaces.CustomSeekBarChangeListener;
 import com.dinobikic.shopapp.mvp.presenters.ConfigPresenter;
 import com.dinobikic.shopapp.mvp.presenters.impl.ConfigPresenterImpl;
 import com.dinobikic.shopapp.mvp.views.ConfigView;

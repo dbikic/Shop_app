@@ -3,15 +3,13 @@ package com.dinobikic.shopapp.mvp.interactors.impl;
 import com.google.gson.Gson;
 
 import com.dinobikic.shopapp.ShopApplication;
-import com.dinobikic.shopapp.interfaces.GetBeaconsCallback;
+import com.dinobikic.shopapp.interfaces.BeaconsCallback;
 import com.dinobikic.shopapp.models.StoreConfiguration;
 import com.dinobikic.shopapp.mvp.interactors.ShoppingInteractor;
-import com.dinobikic.shopapp.utils.Constants;
 import com.dinobikic.shopapp.utils.JSONParser;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -27,12 +25,16 @@ public class ShoppingInteractorImpl implements ShoppingInteractor {
 
     private JSONParser jParser = new JSONParser();
 
-    GetBeaconsCallback getBeaconsCallback;
+    String shopId;
+
+    String deviceId;
+
+    BeaconsCallback beaconsCallback;
 
     @Override
-    public String getBeacons(String shopName, GetBeaconsCallback getBeaconsCallback) {
+    public void getBeacons(String shopName, BeaconsCallback beaconsCallback) {
         TelephonyManager telephonyManager = (TelephonyManager) ShopApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
-        this.getBeaconsCallback = getBeaconsCallback;
+        this.beaconsCallback = beaconsCallback;
 
         // todo staviti pravi shop name
         this.shopId = "2";
@@ -40,12 +42,8 @@ public class ShoppingInteractorImpl implements ShoppingInteractor {
 
         GetConfig getConfig = new GetConfig();
         getConfig.execute();
-        return null;
     }
 
-    String shopId;
-
-    String deviceId;
     private class GetConfig extends AsyncTask<Void, Void, Void> {
 
         StoreConfiguration storeConfiguration;
@@ -61,10 +59,10 @@ public class ShoppingInteractorImpl implements ShoppingInteractor {
 
             Gson gson = new Gson();
 
-            try {
-                JSONObject jObject = jParser.makeHttpRequest(Constants.getBeacons(), "GET", getMethodParametars);
-                storeConfiguration = gson.fromJson(jObject.toString(), StoreConfiguration.class);
-            } catch (NullPointerException e) {
+//            try {
+//                JSONObject jObject = jParser.makeHttpRequest(Constants.getBeacons(), "GET", getMethodParametars);
+//                storeConfiguration = gson.fromJson(jObject.toString(), StoreConfiguration.class);
+//            } catch (NullPointerException e) {
                 storeConfiguration = gson.fromJson(
                         "{\n"
                                 + "  \"status\": true,\n"
@@ -131,14 +129,15 @@ public class ShoppingInteractorImpl implements ShoppingInteractor {
                                 + "}"
                         ,
                         StoreConfiguration.class);
-            }
+//                beaconsCallback.onError();
+//            }
 
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            getBeaconsCallback.onSuccess(storeConfiguration);
+            beaconsCallback.onSuccess(storeConfiguration);
         }
     }
 

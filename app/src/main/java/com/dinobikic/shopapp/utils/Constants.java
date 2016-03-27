@@ -1,7 +1,7 @@
 package com.dinobikic.shopapp.utils;
 
 
-import com.dinobikic.shopapp.models.BeaconDiscount2;
+import com.dinobikic.shopapp.models.Discount;
 
 import java.util.Locale;
 
@@ -9,11 +9,10 @@ public final class Constants {
 
     public static String serverUrl = "http://cons.riteh.hr/nfc/api/";
 
-    public static BeaconDiscount2 currentSelectedBeacon ;
+    public static Discount currentSelectedBeacon ;
 
     public Constants() {
     }
-
 
     public static String getBeacons(){
         return serverUrl + "getConfig.php";
@@ -28,16 +27,23 @@ public final class Constants {
         );
     }
 
-    public String getCode(){
+    public static String getCode(){
         return serverUrl + "getCode.php";
     }
 
-    public void setCurrentBeacon(BeaconDiscount2 beacon){
+    public void setCurrentBeacon(Discount beacon){
         currentSelectedBeacon = beacon;
     }
 
-    public BeaconDiscount2 getCurrentSelectedBeacon(){
+    public Discount getCurrentSelectedBeacon(){
         return currentSelectedBeacon;
     }
 
+    public static final int REQUEST_CODE_DISCOUNT = 100;
+
+    public static final String RSSI_KEY = "rssiKey";
+
+    public static final String CODE_KEY = "code";
+
+    public static final String POSITION_KEY = "position";
 }

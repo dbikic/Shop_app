@@ -5,22 +5,20 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_beacon">Set RSSI</string>
     <string name="rssiLabel">RSSI: %1$s</string>
-    <string name="title_activity_shopping">Trgovina</string>
+    <string name="title_activity_shopping">Shop</string>
     <string name="title_activity_discount_details">Discount details</string>
     <string name="discovered_discounts">Discovered discounts:</string>
-    <string name="productLbl">Proizvod</string>
-    <string name="oldpriceLbl">Stara cijena</string>
-    <string name="newPriceLbl">Nova cijena</string>
-    <string name="discountLbl">Popust</string>
-    <string name="validUntilLbl">Vrijedi do</string>
-    <string name="getCodeLbl">Ostvari popust</string>
+    <string name="productLbl">Product</string>
+    <string name="oldpriceLbl">Old price</string>
+    <string name="newPriceLbl">New price</string>
+    <string name="discountLbl">Discount</string>
+    <string name="validUntilLbl">Valid to</string>
     <string name="ok">OK</string>
-    <string name="exit">Izlaz</string>
+    <string name="exit">Exit</string>
     <string name="main_screen_message">Prislonite mobilni uređaj uz oznaku na početku dućana i krenite u istraživanje popusta!</string>
-    <string name="main_screen_nfc_error">Za početak korištenja aplikacije upalite NFC senzor.
-    </string>
+    <string name="main_screen_nfc_error">Za početak korištenja aplikacije upalite NFC senzor.</string>
     <string name="bluetooth_error">Bluetooth je isključen, upalite ga da biste koristili aplikaciju</string>
-    <string name="bluetooth_turn_on">Upali</string>
+    <string name="bluetooth_turn_on">Turn on</string>
     <string name="gimbal_api_key">b004f8c0-d82f-4809-8b0c-a3698e0b8d79</string>
     <string name="without_bluetooth_app_doesnt_work">Bez bluetooth-a aplikacija ne radi...</string>
     <string name="error">Error</string>
@@ -32,4 +30,5 @@
     <string name="valid_to">Valid to</string>
     <string name="get_the_discount_code">Get the discount code</string>
     <string name="discount_code">Discount code</string>
+    <string name="code_received">You received the code for this discount! Please show it to our cashier in order to claim the discount.</string>
 </resources>

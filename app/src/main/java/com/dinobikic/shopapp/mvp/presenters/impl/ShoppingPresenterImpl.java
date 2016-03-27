@@ -1,8 +1,8 @@
 package com.dinobikic.shopapp.mvp.presenters.impl;
 
 import com.dinobikic.shopapp.R;
-import com.dinobikic.shopapp.interfaces.GetBeaconsCallback;
-import com.dinobikic.shopapp.models.BeaconDiscount2;
+import com.dinobikic.shopapp.interfaces.BeaconsCallback;
+import com.dinobikic.shopapp.models.Discount;
 import com.dinobikic.shopapp.models.StoreConfiguration;
 import com.dinobikic.shopapp.mvp.interactors.ShoppingInteractor;
 import com.dinobikic.shopapp.mvp.interactors.impl.ShoppingInteractorImpl;
@@ -28,7 +28,9 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
 
     StoreConfiguration storeConfiguration;
 
-    ArrayList<BeaconDiscount2> discoveredBeacons;
+    ArrayList<Discount> discoveredBeacons;
+
+    int selectedPosition;
 
     public ShoppingPresenterImpl(ShoppingView view) {
         this.view = view;
@@ -64,7 +66,7 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
     @Override
     public void getBeaconList() {
         view.showProgress();
-        interactor.getBeacons(shopName, new GetBeaconsCallback() {
+        interactor.getBeacons(shopName, new BeaconsCallback() {
             @Override
             public void onError() {
                 view.hideProgress();
@@ -77,7 +79,7 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
                 if (response != null) {
                     storeConfiguration = response;
                     view.setStoreTitle(storeConfiguration.getStore());
-//                    view.showActiveDiscounts(storeConfiguration.getBeaconDiscounts());
+//                    view.showAxctiveDiscounts(storeConfiguration.getBeaconDiscounts());
                 }
             }
 
@@ -86,12 +88,23 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
 
     @Override
     public void onBeaconDiscovered(String beaconId) {
-        BeaconDiscount2 discoveredBeacon = storeConfiguration.getDiscountFromBeaconId(beaconId);
+        Discount discoveredBeacon = storeConfiguration.getDiscountFromBeaconId(beaconId);
 
         if (discoveredBeacon != null && !discoveredBeacons.contains(discoveredBeacon)) {
             discoveredBeacons.add(discoveredBeacon);
             view.showDiscount(discoveredBeacon);
         }
+    }
+
+    @Override
+    public void onDiscountSelected(int position) {
+        selectedPosition = position;
+        view.navigateToDiscountDetails(discoveredBeacons.get(position));
+    }
+
+    @Override
+    public void onCodeReceived(String code) {
+        discoveredBeacons.get(selectedPosition).setCode(code);
     }
 
     @Override

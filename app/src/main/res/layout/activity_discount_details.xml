@@ -2,7 +2,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="32dp"
         android:layout_marginBottom="4dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
@@ -136,17 +136,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/discount_wrapper"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp">
+                android:layout_centerHorizontal="true">
 
             <Button
                     android:id="@+id/btn_discount_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:paddingLeft="4dp"
                     android:paddingRight="4dp"
+                    android:layout_marginTop="24dp"
                     android:textColor="@color/colorPrimaryDark"
-                    android:background="@drawable/dicount_button"
+                    android:background="@drawable/discount_button"
                     android:text="@string/get_the_discount_code"/>
 
             <LinearLayout
@@ -154,6 +156,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_gravity="center"
                     android:visibility="gone">
 
@@ -162,7 +166,6 @@
                         android:layout_height="wrap_content"
                         android:text="@string/discount_code"
                         android:gravity="center"
-                        android:layout_marginTop="@dimen/activity_vertical_margin"
                         style="@style/details_title"/>
 
                 <TextView

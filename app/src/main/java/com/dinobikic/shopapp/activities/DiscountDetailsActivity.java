@@ -1,23 +1,26 @@
 package com.dinobikic.shopapp.activities;
 
 import com.dinobikic.shopapp.R;
-import com.dinobikic.shopapp.models.BeaconDiscount2;
+import com.dinobikic.shopapp.models.Discount;
+import com.dinobikic.shopapp.mvp.presenters.DiscountDetailsPresenter;
+import com.dinobikic.shopapp.mvp.presenters.impl.DiscountDetailsPresenterImpl;
+import com.dinobikic.shopapp.mvp.views.DiscountDetailsView;
 import com.dinobikic.shopapp.utils.Constants;
-import com.dinobikic.shopapp.utils.JSONParser;
+import com.dinobikic.shopapp.utils.StringUtils;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class DiscountDetailsActivity extends Activity {
+public class DiscountDetailsActivity extends BaseActivity implements DiscountDetailsView {
 
     public static final String DISCOUNT_TAG = "discount";
 
@@ -43,24 +46,11 @@ public class DiscountDetailsActivity extends Activity {
     TextView tvCode;
 
     @Bind(R.id.code_wrapper)
-    LinearLayout codeWrapper;
+    View codeWrapper;
 
-    private Button btnGetCode;
+    private DiscountDetailsPresenter presenter;
 
-    private BeaconDiscount2 beaconDiscount;
-
-    private Constants globalValues;
-
-    private ProgressDialog pDialog;
-
-    private JSONParser jParser = new JSONParser();
-
-    private final String STATUS_TAG = "status";
-
-    private final String CODE_TAG = "code";
-
-
-    public static final Intent buildIntent(Context context, BeaconDiscount2 discount) {
+    public static final Intent buildIntent(Context context, Discount discount) {
         Intent intent = new Intent(context, DiscountDetailsActivity.class);
         intent.putExtra(DISCOUNT_TAG, discount);
         return intent;
@@ -72,101 +62,74 @@ public class DiscountDetailsActivity extends Activity {
         setContentView(R.layout.activity_discount_details);
         ButterKnife.bind(this);
 
-        init();
+        presenter = new DiscountDetailsPresenterImpl(this);
+
+        presenter.onCreated(getIntent());
     }
 
-    public void init() {
+    // region DiscountDetailsView
 
-        globalValues = new Constants();
-        beaconDiscount = globalValues.getCurrentSelectedBeacon();
+    @Override
+    public void initUI(Discount discount) {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        setTitle(discount.getDiscountName());
+        tvProduct.setText(discount.getDiscountProduct());
+        tvOldPrice.setText(StringUtils.formatBalance(discount.getDiscountOldPrice()));
+        tvNewPrice.setText(StringUtils.formatBalance(discount.getDiscountNewPrice()));
+        tvDiscount.setText(
+                StringUtils.getPercentage(
+                        discount.getDiscountOldPrice(),
+                        discount.getDiscountNewPrice()
+                )
+        );
+        tvValidTo.setText(discount.getDiscountValidTo());
     }
 
-//        TextView tvProduct = (TextView) findViewById(R.id.tvProduct);
-//        TextView tvOldPrice = (TextView) findViewById(R.id.tvOldPrice);
-//        TextView tvNewPrice = (TextView) findViewById(R.id.tvNewPrice);
-//        TextView tvDiscount = (TextView) findViewById(R.id.tvDiscount);
-//        TextView tvDiscountPercentage = (TextView) findViewById(R.id.tvDiscountPercentage);
-//        TextView tvValidUntil = (TextView) findViewById(R.id.tvValidUntil);
-//        tvCode = (TextView) findViewById(R.id.tvCode);
-//
-//        tvProduct.setText(beaconDiscount.getDiscountProduct());
-//        tvOldPrice.setText(beaconDiscount.getDiscountOldPrice() + " kn");
-//        tvNewPrice.setText(beaconDiscount.getDiscountNewPrice() + " kn");
-//        tvDiscountPercentage.setText(StringUtils.getPercentage(beaconDiscount.getDiscountOldPrice(), beaconDiscount.getDiscountNewPrice()));
-//        tvDiscount.setText(beaconDiscount.getDiscountName());
-//        tvValidUntil.setText(beaconDiscount.getDiscountValidTo());
-//
-//        if (beaconDiscount.getCode().equals("0")) {
-//
-//            btnGetCode = (Button) findViewById(R.id.btnGetCode);
-//            btnGetCode.setVisibility(View.VISIBLE);
-//            btnGetCode.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-////                    GetCode gc = new GetCode();
-////                    gc.execute();
-//                }
-//            });
-//
-//        } else {
-//            tvCode.setText("Vaš kod za popust:\n" + beaconDiscount.getCode());
-//            tvCode.setVisibility(View.VISIBLE);
-//        }
-//
+    @Override
+    public void showDiscountButton() {
+        btnDiscountCode.setVisibility(View.VISIBLE);
+    }
 
-//    private class GetCode extends AsyncTask<Void, Void, Void> {
-//
-//        private boolean status = false;
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//            pDialog = new ProgressDialog(DiscountDetailsActivity.this);
-//            pDialog.setMessage("Trenutak...");
-//            pDialog.setIndeterminate(false);
-//            pDialog.setCancelable(true);
-//            pDialog.show();
-//        }
-//
-//        @Override
-//        protected Void doInBackground(Void... voids) {
-//
-//            List<NameValuePair> getMethodParametars = new ArrayList<>();
-//            getMethodParametars.add(new BasicNameValuePair("discount_id", beaconDiscount.getDiscountId()));
-//
-//            TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-//            getMethodParametars.add(new BasicNameValuePair("uid", telephonyManager.getDeviceId()));
-//
-//            JSONObject jObject = jParser.makeHttpRequest(globalValues.getCode(), "POST", getMethodParametars);
-//            // todo exception ako nema neta
-//            Log.d("JSON", jObject.toString());
-//
-//            try {
-//                //changeTitle(jObject.getString(STORE_TAG));
-//                status = jObject.getBoolean(STATUS_TAG);
-//                if (status) {
-//                    beaconDiscount.setValue(CODE_TAG, jObject.getString(CODE_TAG));
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            tvCode.setText("Vaš kod za popust:\n" + beaconDiscount.getCode());
-//                            btnGetCode.setVisibility(View.GONE);
-//                            tvCode.setVisibility(View.VISIBLE);
-//                        }
-//                    });
-//                }
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Void aVoid) {
-//            pDialog.dismiss();
-//        }
-//
-//    }
+    @Override
+    public void showDiscountCode(String code) {
+        btnDiscountCode.setVisibility(View.GONE);
+        codeWrapper.setVisibility(View.VISIBLE);
+        tvCode.setText(code);
+    }
+
+    //endregion
+
+    @OnClick(R.id.btn_discount_code)
+    public void getDiscount() {
+        presenter.getDiscount();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onFinishing();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        onFinishing();
+    }
+
+    private void onFinishing() {
+        if (presenter.isCodeActivated()) {
+            Intent intent = new Intent();
+            intent.putExtra(Constants.CODE_KEY, presenter.getNewDiscountCode());
+            setResult(RESULT_OK, intent);
+            finish();
+        } else {
+            finish();
+        }
+
+    }
 
 }

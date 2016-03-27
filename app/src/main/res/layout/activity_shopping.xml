@@ -21,11 +21,14 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="16dp" />
         <TextView
+                android:id="@+id/tv_discovered_beacons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/discovered_discounts"
                 android:gravity="center"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:textColor="@color/white"
                 android:layout_marginBottom="20dp"/>
 
@@ -37,7 +40,7 @@
             android:layout_weight="1">
         <ListView
                 android:visibility="gone"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/lv_discounts"/>
 
