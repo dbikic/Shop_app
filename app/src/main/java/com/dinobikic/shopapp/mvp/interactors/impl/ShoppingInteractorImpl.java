@@ -6,10 +6,12 @@ import com.dinobikic.shopapp.ShopApplication;
 import com.dinobikic.shopapp.interfaces.BeaconsCallback;
 import com.dinobikic.shopapp.models.StoreConfiguration;
 import com.dinobikic.shopapp.mvp.interactors.ShoppingInteractor;
+import com.dinobikic.shopapp.utils.Constants;
 import com.dinobikic.shopapp.utils.JSONParser;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -51,7 +53,7 @@ public class ShoppingInteractorImpl implements ShoppingInteractor {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            // todo exception ako nema neta
+            // todo ex  ception ako nema neta
 
             List<NameValuePair> getMethodParametars = new ArrayList<>();
             getMethodParametars.add(new BasicNameValuePair("id", shopId));
@@ -59,10 +61,10 @@ public class ShoppingInteractorImpl implements ShoppingInteractor {
 
             Gson gson = new Gson();
 
-//            try {
-//                JSONObject jObject = jParser.makeHttpRequest(Constants.getBeacons(), "GET", getMethodParametars);
-//                storeConfiguration = gson.fromJson(jObject.toString(), StoreConfiguration.class);
-//            } catch (NullPointerException e) {
+            try {
+                JSONObject jObject = jParser.makeHttpRequest(Constants.getBeacons(), "GET", getMethodParametars);
+                storeConfiguration = gson.fromJson(jObject.toString(), StoreConfiguration.class);
+            } catch (NullPointerException e) {
                 storeConfiguration = gson.fromJson(
                         "{\n"
                                 + "  \"status\": true,\n"
@@ -129,8 +131,8 @@ public class ShoppingInteractorImpl implements ShoppingInteractor {
                                 + "}"
                         ,
                         StoreConfiguration.class);
-//                beaconsCallback.onError();
-//            }
+                beaconsCallback.onError();
+            }
 
             return null;
         }

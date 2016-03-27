@@ -8,7 +8,6 @@ import com.dinobikic.shopapp.mvp.presenters.impl.ShoppingPresenterImpl;
 import com.dinobikic.shopapp.mvp.views.ShoppingView;
 import com.dinobikic.shopapp.utils.Constants;
 
-import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -80,22 +79,9 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
     }
 
     @Override
-    public void requestEnableBluetooth() {
-        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-    }
-
-    @Override
     public void setStoreTitle(String storeTitle) {
         tvShopTitle.setText(storeTitle);
         tvDiscoveredBeacons.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void showActiveDiscounts(ArrayList<Discount> beacons) {
-        if (beacons != null && beacons.size() != 0) {
-            adapter.addAll(beacons);
-        }
     }
 
     @Override

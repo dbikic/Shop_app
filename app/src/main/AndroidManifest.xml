@@ -19,7 +19,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.dinobikic.shopapp.activities.MainActivity"
-            android:theme="@style/MojaTema">
+            android:theme="@style/MojaTema"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -28,6 +29,7 @@
         <activity
             android:name="com.dinobikic.shopapp.activities.ConfigActivity"
             android:label="@string/title_activity_beacon"
+            android:screenOrientation="portrait"
             android:theme="@style/MojaTema" >
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
@@ -43,6 +45,7 @@
         <activity
             android:name="com.dinobikic.shopapp.activities.ShoppingActivity"
             android:label="@string/title_activity_shopping"
+            android:screenOrientation="portrait"
             android:theme="@style/MojaTema" >
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
@@ -58,6 +61,7 @@
         <activity
             android:name="com.dinobikic.shopapp.activities.DiscountDetailsActivity"
             android:label="@string/title_activity_discount_details"
+            android:screenOrientation="portrait"
             android:theme="@style/MojaTema">
         </activity>
     </application>

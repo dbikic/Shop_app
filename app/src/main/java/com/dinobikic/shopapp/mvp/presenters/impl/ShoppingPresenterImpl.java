@@ -10,7 +10,6 @@ import com.dinobikic.shopapp.mvp.presenters.ShoppingPresenter;
 import com.dinobikic.shopapp.mvp.views.ShoppingView;
 import com.dinobikic.shopapp.utils.StringUtils;
 
-import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 
 import java.util.ArrayList;
@@ -49,18 +48,7 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
             shopName = "2";
         }
 
-        BluetoothAdapter btAdapter;
-        btAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (btAdapter == null) {
-            view.showMessage("Bluetooth nije podržan!");
-            view.finishActivity();
-        } else {
-            if (btAdapter.isEnabled()) {
-                getBeaconList();
-            } else {
-                view.requestEnableBluetooth();
-            }
-        }
+        getBeaconList();
     }
 
     @Override
