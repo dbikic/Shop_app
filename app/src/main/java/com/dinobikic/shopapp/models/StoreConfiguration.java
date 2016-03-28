@@ -26,6 +26,12 @@ public class StoreConfiguration implements Serializable {
     @SerializedName("Id")
     String storeId;
 
+    @SerializedName("telephone")
+    String telephone;
+
+    @SerializedName("storeAddress")
+    String storeAddress;
+
     @SerializedName("beacons")
     ArrayList<Discount> discounts;
 
@@ -43,6 +49,14 @@ public class StoreConfiguration implements Serializable {
 
     public String getStoreId() {
         return storeId;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public String getStoreAddress() {
+        return storeAddress;
     }
 
     public ArrayList<Discount> getDiscounts() {

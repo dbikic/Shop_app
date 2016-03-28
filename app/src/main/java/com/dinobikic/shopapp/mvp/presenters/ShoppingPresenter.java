@@ -1,5 +1,7 @@
 package com.dinobikic.shopapp.mvp.presenters;
 
+import com.dinobikic.shopapp.models.StoreConfiguration;
+
 import android.content.Intent;
 
 /**
@@ -16,4 +18,6 @@ public interface ShoppingPresenter extends BasePresenter {
     void onDiscountSelected(int position);
 
     void onCodeReceived(String code);
+
+    StoreConfiguration getStoreConfiguration();
 }

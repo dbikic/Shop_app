@@ -5,6 +5,7 @@ import com.dinobikic.shopapp.ShopApplication;
 import android.support.annotation.StringRes;
 
 import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * Created by dino on 23/03/16.
@@ -24,7 +25,11 @@ public class StringUtils {
         decimalFormat.setMinimumFractionDigits(2);
         decimalFormat.setMaximumFractionDigits(2);
 
-        return decimalFormat.format(decimalBalance);
+        return String.format(
+                Locale.US,
+                "%s kn",
+                decimalFormat.format(decimalBalance)
+        );
     }
 
     public static String getPercentage(double oldPrice, double newPrice) {

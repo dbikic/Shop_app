@@ -40,6 +40,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     protected void onResume() {
         super.onResume();
+        //todo uncomment
 //        if (!BluetoothHelper.isBluetoothEnabled()) {
 //            showEnableFeature(getString(R.string.bluetooth_error));
 //        }

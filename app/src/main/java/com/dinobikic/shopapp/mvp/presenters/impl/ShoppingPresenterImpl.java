@@ -96,6 +96,11 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
     }
 
     @Override
+    public StoreConfiguration getStoreConfiguration() {
+        return storeConfiguration;
+    }
+
+    @Override
     public void cancel() {
 
     }

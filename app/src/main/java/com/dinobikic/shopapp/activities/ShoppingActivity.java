@@ -2,7 +2,9 @@ package com.dinobikic.shopapp.activities;
 
 import com.dinobikic.shopapp.R;
 import com.dinobikic.shopapp.adapters.DiscountsAdapter;
+import com.dinobikic.shopapp.dialogs.ShopInfoDialogFragment;
 import com.dinobikic.shopapp.models.Discount;
+import com.dinobikic.shopapp.models.StoreConfiguration;
 import com.dinobikic.shopapp.mvp.presenters.ShoppingPresenter;
 import com.dinobikic.shopapp.mvp.presenters.impl.ShoppingPresenterImpl;
 import com.dinobikic.shopapp.mvp.views.ShoppingView;
@@ -12,6 +14,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -43,15 +48,19 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
 
     int rssi;
 
-    final static int REQUEST_ENABLE_BT = 1;
-
     private List<Discount> beaconDiscountList, seenBeacons;
 
     private DiscountsAdapter adapter;
 
-    private Constants globalValues;
-
     private ShoppingPresenter presenter;
+
+    private AdapterView.OnItemClickListener beaconListClick = new AdapterView.OnItemClickListener() {
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            presenter.onDiscountSelected(i);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +70,6 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
         ButterKnife.bind(this);
 
         presenter = new ShoppingPresenterImpl(this);
-
         presenter.onCreated(getIntent());
     }
 
@@ -69,7 +77,6 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
 
     @Override
     public void initUI() {
-        globalValues = new Constants();
         beaconDiscountList = new ArrayList<>();
         seenBeacons = new ArrayList<>();
         adapter = new DiscountsAdapter(this, R.layout.beacons_list_item, seenBeacons);
@@ -97,11 +104,38 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
 
     //endregion
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_shopping, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_info) {
+//            Toast.makeText(ShoppingActivity.this, "Info", Toast.LENGTH_SHORT).show();
+//            AlertDialog alertDialog = new AlertDialog.Builder(this)
+//                    .setTitle(R.string.shop_details)
+//                    .setMessage(StringUtils.getPercentage())
+//                    .setPositiveButton(getString(R.string.ok), null)
+//                    .create();
+//            alertDialog.show();
+            ShopInfoDialogFragment dialogFragment = ShopInfoDialogFragment.newInstance(
+                    presenter.getStoreConfiguration()
+            );
+            dialogFragment.show(getFragmentManager(), "");
+        }
+
+        return true;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_ENABLE_BT) {
+        if (requestCode == Constants.REQUEST_ENABLE_BT) {
             if (resultCode == RESULT_OK) {
                 presenter.getBeaconList();
             } else {
@@ -138,26 +172,7 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
 //                }
 //            }
 //        }
-//6HU1-R7XS5
     }
-
-
-    private AdapterView.OnItemClickListener beaconListClick = new AdapterView.OnItemClickListener() {
-
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            presenter.onDiscountSelected(i);
-//            globalValues.setCurrentBeacon(seenBeacons.get(i));
-//            runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Intent intent = new Intent();
-//                    intent.setClass(getApplicationContext(), DiscountDetailsActivity.class);
-//                    startActivity(intent);
-//                }
-//            });
-        }
-    };
 
     int i = 0;
     @OnClick(R.id.tv_shop_title)

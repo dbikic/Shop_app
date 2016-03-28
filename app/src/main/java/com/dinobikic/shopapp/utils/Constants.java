@@ -41,6 +41,8 @@ public final class Constants {
 
     public static final int REQUEST_CODE_DISCOUNT = 100;
 
+    public static final int REQUEST_ENABLE_BT = 1;
+
     public static final String RSSI_KEY = "rssiKey";
 
     public static final String CODE_KEY = "code";
