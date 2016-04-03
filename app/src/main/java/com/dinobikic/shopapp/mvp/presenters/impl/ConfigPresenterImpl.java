@@ -36,9 +36,4 @@ public class ConfigPresenterImpl implements ConfigPresenter {
         view.displayRssiValue(rssiValue);
     }
 
-
-    @Override
-    public int getRssi() {
-        return rssi != Integer.MIN_VALUE ? rssi : interactor.getRssi();
-    }
 }

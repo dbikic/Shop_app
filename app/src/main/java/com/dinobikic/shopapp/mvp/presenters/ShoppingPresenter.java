@@ -2,6 +2,7 @@ package com.dinobikic.shopapp.mvp.presenters;
 
 import com.dinobikic.shopapp.models.StoreConfiguration;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 
 /**
@@ -13,7 +14,7 @@ public interface ShoppingPresenter extends BasePresenter {
 
     void getBeaconList();
 
-    void onBeaconDiscovered(String beaconId);
+    void onBeaconDiscovered(int rssi, BluetoothDevice device);
 
     void onDiscountSelected(int position);
 

@@ -64,7 +64,7 @@ public class ShoppingInteractorImpl implements ShoppingInteractor {
             try {
                 JSONObject jObject = jParser.makeHttpRequest(Constants.getBeacons(), "GET", getMethodParametars);
                 storeConfiguration = gson.fromJson(jObject.toString(), StoreConfiguration.class);
-            } catch (NullPointerException e) {
+            } catch (Exception e) {
                 storeConfiguration = gson.fromJson(
                         "{\n"
                                 + "  \"status\": true,\n"
@@ -74,24 +74,24 @@ public class ShoppingInteractorImpl implements ShoppingInteractor {
                                 + "  \"beacons\": [\n"
                                 + "    {\n"
                                 + "      \"discount_id\": \"7\",\n"
-                                + "      \"factory_id\": \"6HU1-R7XS5\",\n"
+                                + "      \"factory_id\": \"A4:D8:56:00:D1:2F\",\n"
                                 + "      \"discountName\": \"Ljetnja akcija\",\n"
                                 + "      \"discountProduct\": \"Suncobran\",\n"
                                 + "      \"discountNewPrice\": \"10\",\n"
                                 + "      \"discountOldPrice\": \"150\",\n"
                                 + "      \"discountValidFrom\": \"2015-06-13 05:34:00\",\n"
-                                + "      \"discountValidTo\": \"2015-06-23 17:34:00\",\n"
+                                + "      \"discountValidTo\": \"2016-06-23 17:34:00\",\n"
                                 + "      \"code\": \"0\"\n"
                                 + "    },\n"
                                 + "    {\n"
                                 + "      \"discount_id\": \"9\",\n"
-                                + "      \"factory_id\": \"PPCN-QWM7G\",\n"
+                                + "      \"factory_id\": \"A4:D8:56:00:17:4A\",\n"
                                 + "      \"discountName\": \"Francuski tjedan\",\n"
                                 + "      \"discountProduct\": \"Vino Rose 0,7l\",\n"
                                 + "      \"discountNewPrice\": \"160\",\n"
                                 + "      \"discountOldPrice\": \"200\",\n"
                                 + "      \"discountValidFrom\": \"2015-06-11 00:12:00\",\n"
-                                + "      \"discountValidTo\": \"2015-06-12 02:12:00\",\n"
+                                + "      \"discountValidTo\": \"2016-06-12 02:12:00\",\n"
                                 + "      \"code\": \"0\"\n"
                                 + "    },\n"
                                 + "    {\n"
@@ -131,7 +131,7 @@ public class ShoppingInteractorImpl implements ShoppingInteractor {
                                 + "}"
                         ,
                         StoreConfiguration.class);
-                beaconsCallback.onError();
+//                beaconsCallback.onError();
             }
 
             return null;

@@ -9,5 +9,4 @@ public interface ConfigPresenter {
 
     void setRssiValue(int rssiValue);
 
-    int getRssi();
 }

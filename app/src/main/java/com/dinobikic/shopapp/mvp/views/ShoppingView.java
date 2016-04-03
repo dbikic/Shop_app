@@ -9,7 +9,7 @@ public interface ShoppingView extends BaseView {
 
     void initUI();
 
-    void setStoreTitle(String store);
+    void initStore(String store);
 
     void showDiscount(Discount beaconDiscount);
 

@@ -5,11 +5,13 @@ import com.dinobikic.shopapp.interfaces.BeaconsCallback;
 import com.dinobikic.shopapp.models.Discount;
 import com.dinobikic.shopapp.models.StoreConfiguration;
 import com.dinobikic.shopapp.mvp.interactors.ShoppingInteractor;
+import com.dinobikic.shopapp.mvp.interactors.impl.ConfigInteractorImpl;
 import com.dinobikic.shopapp.mvp.interactors.impl.ShoppingInteractorImpl;
 import com.dinobikic.shopapp.mvp.presenters.ShoppingPresenter;
 import com.dinobikic.shopapp.mvp.views.ShoppingView;
 import com.dinobikic.shopapp.utils.StringUtils;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 
 import java.util.ArrayList;
@@ -31,6 +33,8 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
 
     int selectedPosition;
 
+    int minRssi;
+
     public ShoppingPresenterImpl(ShoppingView view) {
         this.view = view;
         this.interactor = new ShoppingInteractorImpl();
@@ -47,6 +51,8 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
         } else {
             shopName = "2";
         }
+
+        minRssi = new ConfigInteractorImpl().getRssi() * -1;
 
         getBeaconList();
     }
@@ -66,22 +72,11 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
                 view.hideProgress();
                 if (response != null) {
                     storeConfiguration = response;
-                    view.setStoreTitle(storeConfiguration.getStore());
-//                    view.showAxctiveDiscounts(storeConfiguration.getBeaconDiscounts());
+                    view.initStore(storeConfiguration.getStore());
                 }
             }
 
         });
-    }
-
-    @Override
-    public void onBeaconDiscovered(String beaconId) {
-        Discount discoveredBeacon = storeConfiguration.getDiscountFromBeaconId(beaconId);
-
-        if (discoveredBeacon != null && !discoveredBeacons.contains(discoveredBeacon)) {
-            discoveredBeacons.add(discoveredBeacon);
-            view.showDiscount(discoveredBeacon);
-        }
     }
 
     @Override
@@ -98,6 +93,20 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
     @Override
     public StoreConfiguration getStoreConfiguration() {
         return storeConfiguration;
+    }
+
+    @Override
+    public void onBeaconDiscovered(int rssi, BluetoothDevice device) {
+
+        if (rssi <= minRssi ) {
+            Discount discoveredBeacon = storeConfiguration.getDiscountFromBeaconId(device.getAddress());
+
+            if (discoveredBeacon != null && !discoveredBeacons.contains(discoveredBeacon)) {
+                discoveredBeacons.add(discoveredBeacon);
+                view.showDiscount(discoveredBeacon);
+            }
+        }
+
     }
 
     @Override

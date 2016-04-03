@@ -18,6 +18,8 @@ import butterknife.ButterKnife;
  */
 public class ShopInfoDialogFragment extends DialogFragment {
 
+    public static final String SHOPING_INFO_DIALOG_FRAGMENT_TAG = "shopInfoDialogFragment";
+
     public static final String STORE_CONFIGURATION = "storeConfiguration";
 
     TextView tvAddress;

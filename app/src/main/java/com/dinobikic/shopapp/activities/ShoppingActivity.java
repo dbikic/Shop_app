@@ -4,15 +4,16 @@ import com.dinobikic.shopapp.R;
 import com.dinobikic.shopapp.adapters.DiscountsAdapter;
 import com.dinobikic.shopapp.dialogs.ShopInfoDialogFragment;
 import com.dinobikic.shopapp.models.Discount;
-import com.dinobikic.shopapp.models.StoreConfiguration;
 import com.dinobikic.shopapp.mvp.presenters.ShoppingPresenter;
 import com.dinobikic.shopapp.mvp.presenters.impl.ShoppingPresenterImpl;
 import com.dinobikic.shopapp.mvp.views.ShoppingView;
 import com.dinobikic.shopapp.utils.Constants;
 
-import android.content.Context;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanResult;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +28,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 public class ShoppingActivity extends BaseActivity implements ShoppingView {
@@ -44,11 +44,9 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
     @Bind(R.id.empty_state)
     View emptyListView;
 
-    private SharedPreferences sharedpreferences;
+    private List<Discount> seenBeacons;
 
-    int rssi;
-
-    private List<Discount> beaconDiscountList, seenBeacons;
+    BluetoothLeScanner bluetoothLeScanner;
 
     private DiscountsAdapter adapter;
 
@@ -59,6 +57,14 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             presenter.onDiscountSelected(i);
+        }
+    };
+
+    private ScanCallback scanCallback = new ScanCallback() {
+        @Override
+        public void onScanResult(int callbackType, ScanResult result) {
+            super.onScanResult(callbackType, result);
+            presenter.onBeaconDiscovered(result.getRssi(), result.getDevice());
         }
     };
 
@@ -73,38 +79,6 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
         presenter.onCreated(getIntent());
     }
 
-    // region ShoppingView
-
-    @Override
-    public void initUI() {
-        beaconDiscountList = new ArrayList<>();
-        seenBeacons = new ArrayList<>();
-        adapter = new DiscountsAdapter(this, R.layout.beacons_list_item, seenBeacons);
-        lvDiscounts.setAdapter(adapter);
-        lvDiscounts.setEmptyView(emptyListView);
-        lvDiscounts.setOnItemClickListener(beaconListClick);
-    }
-
-    @Override
-    public void setStoreTitle(String storeTitle) {
-        tvShopTitle.setText(storeTitle);
-        tvDiscoveredBeacons.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void showDiscount(Discount beaconDiscount) {
-        adapter.add(beaconDiscount);
-    }
-
-    @Override
-    public void navigateToDiscountDetails(Discount discount) {
-        Intent intent = DiscountDetailsActivity.buildIntent(this, discount);
-        startActivityForResult(intent, Constants.REQUEST_CODE_DISCOUNT);
-    }
-
-    //endregion
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -114,21 +88,29 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         if (item.getItemId() == R.id.action_info) {
-//            Toast.makeText(ShoppingActivity.this, "Info", Toast.LENGTH_SHORT).show();
-//            AlertDialog alertDialog = new AlertDialog.Builder(this)
-//                    .setTitle(R.string.shop_details)
-//                    .setMessage(StringUtils.getPercentage())
-//                    .setPositiveButton(getString(R.string.ok), null)
-//                    .create();
-//            alertDialog.show();
             ShopInfoDialogFragment dialogFragment = ShopInfoDialogFragment.newInstance(
                     presenter.getStoreConfiguration()
             );
-            dialogFragment.show(getFragmentManager(), "");
+            dialogFragment.show(getFragmentManager(), ShopInfoDialogFragment.SHOPING_INFO_DIALOG_FRAGMENT_TAG);
+
+        } else if (item.getItemId() == android.R.id.home) {
+            finishActivity();
         }
 
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishActivity();
+    }
+
+    @Override
+    public void finishActivity() {
+        bluetoothLeScanner.stopScan(scanCallback);
+        super.finishActivity();
     }
 
     @Override
@@ -148,50 +130,38 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
         }
     }
 
-    public void beaconSearcher() {
-
-        sharedpreferences = getSharedPreferences("DinoShoppApp", Context.MODE_PRIVATE);
-        if (sharedpreferences.contains(Constants.RSSI_KEY)) {
-            rssi = sharedpreferences.getInt(Constants.RSSI_KEY, 0);
-        } else {
-            rssi = -50;
-        }
-
-//        if (beaconSighting.getRSSI() > rssi) {
-//            Beacon foundBeacon = beaconSighting.getBeacon();
-//
-//            for (int i = 0; i < beaconDiscountList.size(); i++) {
-//
-//                if (foundBeacon.getIdentifier().equals(beaconDiscountList.get(i).getId())) {
-//                    if (!beaconDiscountList.get(i).getSeen()) {
-//                        seenBeacons.add(beaconDiscountList.get(i));
-//                        beaconDiscountList.get(i).setSeen();
-//
-//                        adapter.notifyDataSetChanged();
-//                    }
-//                }
-//            }
-//        }
-    }
-
-    int i = 0;
-    @OnClick(R.id.tv_shop_title)
-    public void addBeacon() {
-        if (i == 0) {
-            presenter.onBeaconDiscovered("6HU1-R7XS5");
-            i++;
-        } else if (i == 1) {
-            presenter.onBeaconDiscovered("PPCN-QWM7G");
-            i++;
-        } else if (i == 2) {
-            presenter.onBeaconDiscovered("qwe3");
-        }
-    }
-
+    // region ShoppingView
 
     @Override
-    public void onBackPressed() {
-        finish();
+    public void initUI() {
+        seenBeacons = new ArrayList<>();
+        adapter = new DiscountsAdapter(this, R.layout.beacons_list_item, seenBeacons);
+        lvDiscounts.setAdapter(adapter);
+        lvDiscounts.setEmptyView(emptyListView);
+        lvDiscounts.setOnItemClickListener(beaconListClick);
+
     }
+
+    @Override
+    public void initStore(String storeTitle) {
+        tvShopTitle.setText(storeTitle);
+        tvDiscoveredBeacons.setVisibility(View.VISIBLE);
+
+        bluetoothLeScanner = BluetoothAdapter.getDefaultAdapter().getBluetoothLeScanner();
+        bluetoothLeScanner.startScan(scanCallback);
+    }
+
+    @Override
+    public void showDiscount(Discount beaconDiscount) {
+        adapter.add(beaconDiscount);
+    }
+
+    @Override
+    public void navigateToDiscountDetails(Discount discount) {
+        Intent intent = DiscountDetailsActivity.buildIntent(this, discount);
+        startActivityForResult(intent, Constants.REQUEST_CODE_DISCOUNT);
+    }
+
+    //endregion
 
 }

@@ -24,8 +24,6 @@ public class DiscountsAdapter extends ArrayAdapter<Discount> {
 
     public DiscountsAdapter(Context context, int resource, List<Discount> objects) {
         super(context, resource, objects);
-
-
         this.beacons = objects;
         this.currentContext = context;
     }
@@ -44,10 +42,10 @@ public class DiscountsAdapter extends ArrayAdapter<Discount> {
             TextView tvDiscount = (TextView) convertView.findViewById(R.id.tv_discount);
             TextView tvDiscountTitle = (TextView) convertView.findViewById(R.id.tv_discount_title);
 
-            if (tvDiscount != null) {
+            if (tvDiscountTitle != null) {
                 tvDiscountTitle.setText(discount.getDiscountName());
             }
-            if (tvDiscountTitle != null) {
+            if (tvDiscount != null) {
                 tvDiscount.setText(
                         StringUtils.getPercentage(
                                 discount.getDiscountOldPrice(),
