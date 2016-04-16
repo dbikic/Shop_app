@@ -7,25 +7,18 @@ import com.dinobikic.shopapp.interfaces.BeaconsCallback;
 import com.dinobikic.shopapp.models.StoreConfiguration;
 import com.dinobikic.shopapp.mvp.interactors.ShoppingInteractor;
 import com.dinobikic.shopapp.utils.Constants;
-import com.dinobikic.shopapp.utils.JSONParser;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.telephony.TelephonyManager;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by dino on 23/03/16.
  */
 public class ShoppingInteractorImpl implements ShoppingInteractor {
-
-    private JSONParser jParser = new JSONParser();
 
     String shopId;
 
@@ -53,17 +46,16 @@ public class ShoppingInteractorImpl implements ShoppingInteractor {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            // todo ex  ception ako nema neta
-
-            List<NameValuePair> getMethodParametars = new ArrayList<>();
-            getMethodParametars.add(new BasicNameValuePair("id", shopId));
-            getMethodParametars.add(new BasicNameValuePair("user", deviceId));
-
+            OkHttpClient okHttpClient = new OkHttpClient();
             Gson gson = new Gson();
 
             try {
-                JSONObject jObject = jParser.makeHttpRequest(Constants.getBeacons(), "GET", getMethodParametars);
-                storeConfiguration = gson.fromJson(jObject.toString(), StoreConfiguration.class);
+                Request request = new Request.Builder()
+                        .url(Constants.getBeaconsUrl(shopId, deviceId))
+                        .build();
+
+                Response serverResponse = okHttpClient.newCall(request).execute();
+                storeConfiguration = gson.fromJson(serverResponse.body().string(), StoreConfiguration.class);
             } catch (Exception e) {
                 storeConfiguration = gson.fromJson(
                         "{\n"
@@ -131,7 +123,6 @@ public class ShoppingInteractorImpl implements ShoppingInteractor {
                                 + "}"
                         ,
                         StoreConfiguration.class);
-//                beaconsCallback.onError();
             }
 
             return null;

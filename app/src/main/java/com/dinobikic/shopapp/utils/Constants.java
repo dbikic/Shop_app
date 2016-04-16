@@ -14,10 +14,6 @@ public final class Constants {
     public Constants() {
     }
 
-    public static String getBeacons(){
-        return serverUrl + "getConfig.php";
-    }
-
     public static String getBeaconsUrl(String shopName, String deviceId) {
         return String.format(
                 Locale.US,

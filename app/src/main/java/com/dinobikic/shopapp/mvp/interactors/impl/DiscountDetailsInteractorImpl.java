@@ -7,26 +7,20 @@ import com.dinobikic.shopapp.interfaces.DiscountCodeCallback;
 import com.dinobikic.shopapp.models.CodeResponse;
 import com.dinobikic.shopapp.mvp.interactors.DiscountDetailsInteractor;
 import com.dinobikic.shopapp.utils.Constants;
-import com.dinobikic.shopapp.utils.JSONParser;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.telephony.TelephonyManager;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by dino on 27/03/16.
  */
 public class DiscountDetailsInteractorImpl implements DiscountDetailsInteractor {
-
-
-    private JSONParser jParser = new JSONParser();
 
     DiscountCodeCallback discountCodeCallback;
 
@@ -54,18 +48,28 @@ public class DiscountDetailsInteractorImpl implements DiscountDetailsInteractor 
 
         @Override
         protected Void doInBackground(Void... voids) {
-
-            List<NameValuePair> postMethodParametars = new ArrayList<>();
-            postMethodParametars.add(new BasicNameValuePair("discount_id", String.valueOf(discountId)));
-            postMethodParametars.add(new BasicNameValuePair("uid", deviceId));
+            OkHttpClient okHttpClient = new OkHttpClient();
 
             Gson gson = new Gson();
 
             try {
-                JSONObject jObject = jParser.makeHttpRequest(Constants.getCode(), "POST", postMethodParametars);
-                codeResponse = gson.fromJson(jObject.toString(), CodeResponse.class);
+                FormEncodingBuilder formBodyBuilder = new FormEncodingBuilder();
+                formBodyBuilder.add("discount_id", String.valueOf(discountId));
+                formBodyBuilder.add("uid", deviceId);
+
+                RequestBody formBody = formBodyBuilder.build();
+
+
+                Request request = new Request.Builder()
+                        .url(Constants.getCode())
+                        .post(formBody)
+                        .method("POST", formBody)
+                        .build();
+
+                Response serverResponse = okHttpClient.newCall(request).execute();
+                codeResponse = gson.fromJson(serverResponse.body().string(), CodeResponse.class);
                 status = true;
-            } catch (NullPointerException e) {
+            } catch (Exception e) {
                 status = false;
                 discountCodeCallback.onError();
             }

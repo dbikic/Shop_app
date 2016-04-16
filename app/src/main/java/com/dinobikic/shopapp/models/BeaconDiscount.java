@@ -1,7 +1,6 @@
 package com.dinobikic.shopapp.models;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +9,8 @@ import java.util.List;
  * Created by root on 11.06.15..
  */
 public class BeaconDiscount {
-    private List<NameValuePair> list = new ArrayList<NameValuePair>();
+//    private List<NameValuePair> list = new ArrayList<NameValuePair>();
+    List<Pair<String, String>> list  = new ArrayList<>();
     private Boolean seen;
 
     // TODO staviti tagove od apia
@@ -25,16 +25,16 @@ public class BeaconDiscount {
     String CODE_TAG = "code";
 
 
-    public BeaconDiscount(List<NameValuePair> _list, boolean seen)
+    public BeaconDiscount(List<Pair<String, String>> list, boolean seen)
     {
-        this.list = _list;
+        this.list = list;
         this.seen = false;
     }
 
     public String getValue(String value){
         for(int i = 0; i < list.size(); i++){
-            if(list.get(i).getName().equals(value)){
-                return list.get(i).getValue();
+            if(list.get(i).first.equals(value)){
+                return list.get(i).second;
             }
         }
         return "";
@@ -43,8 +43,8 @@ public class BeaconDiscount {
 
     public Void setValue(String tag, String value){
         for(int i = 0; i < list.size(); i++){
-            if(list.get(i).getName().equals(tag)){
-                list.set(i, new BasicNameValuePair(tag, value));
+            if(list.get(i).first.equals(tag)){
+                list.set(i, new Pair<>(tag, value));
             }
         }
         return null;
