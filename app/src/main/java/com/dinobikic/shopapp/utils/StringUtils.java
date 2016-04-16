@@ -1,5 +1,6 @@
 package com.dinobikic.shopapp.utils;
 
+import com.dinobikic.shopapp.R;
 import com.dinobikic.shopapp.ShopApplication;
 
 import android.support.annotation.StringRes;
@@ -35,5 +36,14 @@ public class StringUtils {
     public static String getPercentage(double oldPrice, double newPrice) {
         double percentage = (newPrice / oldPrice) * 100;
         return Math.round(100 - percentage) + "%";
+    }
+
+
+    public static String getRssiValueForDisplay(int rssiValue) {
+        if (rssiValue < 0) {
+            return String.format(Locale.getDefault(), ShopApplication.getInstance().getString(R.string.rssiLabel), String.valueOf(rssiValue));
+        } else {
+            return String.format(Locale.getDefault(), ShopApplication.getInstance().getString(R.string.rssiLabel), String.valueOf(-rssiValue));
+        }
     }
 }

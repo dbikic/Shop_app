@@ -1,183 +1,198 @@
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="4dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:orientation="vertical">
+<android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
-    <LinearLayout
+
+    <ScrollView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/discount_details_top"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:paddingTop="@dimen/activity_vertical_margin">
+            android:fillViewport="true">
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/product"
-                    style="@style/details_title"/>
-
-            <TextView
-                    android:id="@+id/tv_product"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/details_content"
-                    tools:text="Test product"/>
-
-    </LinearLayout>
-
-    <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:background="@drawable/discount_details_bottom">
 
         <LinearLayout
-                android:id="@+id/old_price_wrapper"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
                 android:orientation="vertical">
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/old_price"
-                    style="@style/details_title"/>
 
-            <TextView
-                    android:id="@+id/tv_old_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/details_content"
-                    tools:text="123"/>
-        </LinearLayout>
-
-        <LinearLayout
-                android:id="@+id/new_price_wrapper"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_alignParentEnd="true">
-
-            <TextView
+            <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:text="@string/new_price"
-                    style="@style/details_title"/>
+                    android:layout_marginTop="32dp"
+                    style="@style/card_view">
 
-            <TextView
-                    android:id="@+id/tv_new_price"
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/card_view_child">
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/product"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                    <TextView
+                            android:id="@+id/tv_product"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="Product"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/details_content"
-                    android:gravity="end"
-                    tools:text="100"/>
-        </LinearLayout>
+                    style="@style/card_view">
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/card_view_child">
 
-        <LinearLayout
-                android:id="@+id/discount_wrapper"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_below="@id/old_price_wrapper">
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/old_price"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                    <TextView
+                            android:id="@+id/tv_old_price"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="120"/>
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/discount"
-                    style="@style/details_title"/>
+                </LinearLayout>
 
-            <TextView
-                    android:id="@+id/tv_discount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/details_content"
-                    tools:text="23%"/>
-        </LinearLayout>
+            </android.support.v7.widget.CardView>
 
-        <LinearLayout
-                android:id="@+id/valid_to_wrapper"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_below="@id/old_price_wrapper"
-                android:layout_alignParentEnd="true">
-
-            <TextView
+            <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/valid_to"
-                    android:gravity="end"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    style="@style/details_title"/>
+                    style="@style/card_view">
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/card_view_child">
 
-            <TextView
-                    android:id="@+id/tv_valid_to"
-                    android:layout_width="wrap_content"
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/new_price"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                    <TextView
+                            android:id="@+id/tv_new_price"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="100"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
-                    style="@style/details_content"
-                    tools:text="1.1.2020."/>
-        </LinearLayout>
+                    style="@style/card_view">
 
-        <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/discount_wrapper"
-                android:layout_centerHorizontal="true">
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/card_view_child">
 
-            <Button
-                    android:id="@+id/btn_discount_code"
-                    android:layout_width="wrap_content"
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/discount"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                    <TextView
+                            android:id="@+id/tv_discount"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="Discount"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    style="@style/card_view">
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/card_view_child">
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/valid_to"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                <TextView
+                        android:id="@+id/tv_valid_to"
+                        style="@style/TextAppearance.AppCompat.Body1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="2016"/>
+
+            </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                    android:id="@+id/code_wrapper"
                     android:visibility="gone"
                     tools:visibility="visible"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="4dp"
-                    android:layout_marginTop="24dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:background="@drawable/discount_button"
-                    android:text="@string/get_the_discount_code"/>
-
-            <LinearLayout
-                    android:id="@+id/code_wrapper"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_gravity="center"
-                    android:visibility="gone">
+                    style="@style/card_view"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true">
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/card_view_child">
 
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/discount_code"
-                        android:gravity="center"
-                        style="@style/details_title"/>
-
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
                 <TextView
                         android:id="@+id/tv_code"
+                        style="@style/TextAppearance.AppCompat.Body1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        style="@style/details_content"
-                        tools:text="1234-5678"/>
-            </LinearLayout>
+                        tools:text="XXX"/>
 
-        </FrameLayout>
-    </RelativeLayout>
+                </LinearLayout>
 
-</LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btn_discount_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_gravity="bottom|end"
+            android:clickable="true"
+            android:src="@drawable/ic_shopping_cart"/>
+
+</android.support.design.widget.CoordinatorLayout>

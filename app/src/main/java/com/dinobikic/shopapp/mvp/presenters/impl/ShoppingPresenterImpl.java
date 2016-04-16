@@ -33,7 +33,7 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
 
     int selectedPosition;
 
-    int minRssi;
+    int maxRssi;
 
     public ShoppingPresenterImpl(ShoppingView view) {
         this.view = view;
@@ -52,7 +52,7 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
             shopName = "2";
         }
 
-        minRssi = new ConfigInteractorImpl().getRssi() * -1;
+        maxRssi = new ConfigInteractorImpl().getRssi() * -1;
 
         getBeaconList();
     }
@@ -98,7 +98,7 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
     @Override
     public void onBeaconDiscovered(int rssi, BluetoothDevice device) {
 
-        if (rssi <= minRssi ) {
+        if (-rssi <= -maxRssi) {
             Discount discoveredBeacon = storeConfiguration.getDiscountFromBeaconId(device.getAddress());
 
             if (discoveredBeacon != null && !discoveredBeacons.contains(discoveredBeacon)) {

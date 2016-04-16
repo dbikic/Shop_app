@@ -9,8 +9,7 @@ public interface DiscountDetailsView extends BaseView {
 
     void initUI(Discount discount);
 
-    void showDiscountButton();
-
     void showDiscountCode(String code);
 
+    void scrollToDiscount();
 }

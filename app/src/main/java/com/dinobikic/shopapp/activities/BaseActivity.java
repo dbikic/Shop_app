@@ -2,7 +2,7 @@ package com.dinobikic.shopapp.activities;
 
 import com.dinobikic.shopapp.R;
 import com.dinobikic.shopapp.mvp.views.BaseView;
-import com.dinobikic.shopapp.utils.BluetoothHelper;
+import com.dinobikic.shopapp.utils.ConnectivityHelper;
 import com.dinobikic.shopapp.utils.Events;
 
 import android.app.ProgressDialog;
@@ -41,7 +41,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     protected void onResume() {
         super.onResume();
         //todo uncomment
-//        if (!BluetoothHelper.isBluetoothEnabled()) {
+//        if (!ConnectivityHelper.isBluetoothEnabled()) {
 //            showEnableFeature(getString(R.string.bluetooth_error));
 //        }
     }
@@ -106,7 +106,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
                     .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            if (BluetoothHelper.isBluetoothEnabled()) {
+                            if (ConnectivityHelper.isBluetoothEnabled()) {
                                 dialog.dismiss();
                             } else {
                                 showEnableFeature(message);

@@ -28,7 +28,7 @@
         </activity>
         <activity
             android:name="com.dinobikic.shopapp.activities.ConfigActivity"
-            android:label="@string/title_activity_beacon"
+            android:label="@string/title_activity_config"
             android:screenOrientation="portrait"
             android:theme="@style/MojaTema" >
             <intent-filter>

@@ -2,7 +2,7 @@ package com.dinobikic.shopapp.mvp.presenters.impl;
 
 import com.dinobikic.shopapp.mvp.presenters.MainPresenter;
 import com.dinobikic.shopapp.mvp.views.MainView;
-import com.dinobikic.shopapp.utils.BluetoothHelper;
+import com.dinobikic.shopapp.utils.ConnectivityHelper;
 
 /**
  * Created by dino on 26/12/15.
@@ -17,7 +17,7 @@ public class MainPresenterImpl implements MainPresenter {
 
     @Override
     public void checkNFC() {
-        if (BluetoothHelper.isNFCEnabled()) {
+        if (ConnectivityHelper.isNFCEnabled()) {
             view.initUIForEnabledNFC();
         } else {
             view.initUIForDisabledNFC();

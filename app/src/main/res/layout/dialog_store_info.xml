@@ -20,7 +20,7 @@
                 android:layout_height="wrap_content"
                 style="@style/details_content"
                 android:textColor="@color/colorPrimary"
-                android:text="Address"/>
+                android:text="@string/adresa"/>
 
         <TextView
                 android:id="@+id/tv_address"
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 style="@style/details_content"
                 android:textColor="@color/colorPrimary"
-                android:text="Telephone"/>
+                android:text="@string/telefon"/>
 
         <TextView
                 android:id="@+id/tv_telephone"
@@ -58,7 +58,7 @@
                 android:paddingLeft="16dp"
                 style="@style/details_content"
                 android:textColor="@color/black"
-                tools:text="Test addressTest address"/>
+                tools:text="Adresa"/>
 
     </LinearLayout>
 </LinearLayout>

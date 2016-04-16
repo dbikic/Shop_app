@@ -11,9 +11,10 @@ import com.dinobikic.shopapp.utils.StringUtils;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.CardView;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -40,13 +41,13 @@ public class DiscountDetailsActivity extends BaseActivity implements DiscountDet
     TextView tvValidTo;
 
     @Bind(R.id.btn_discount_code)
-    Button btnDiscountCode;
+    FloatingActionButton btnDiscountCode;
 
     @Bind(R.id.tv_code)
     TextView tvCode;
 
     @Bind(R.id.code_wrapper)
-    View codeWrapper;
+    CardView codeWrapper;
 
     private DiscountDetailsPresenter presenter;
 
@@ -63,7 +64,6 @@ public class DiscountDetailsActivity extends BaseActivity implements DiscountDet
         ButterKnife.bind(this);
 
         presenter = new DiscountDetailsPresenterImpl(this);
-
         presenter.onCreated(getIntent());
     }
 
@@ -88,15 +88,16 @@ public class DiscountDetailsActivity extends BaseActivity implements DiscountDet
     }
 
     @Override
-    public void showDiscountButton() {
-        btnDiscountCode.setVisibility(View.VISIBLE);
+    public void showDiscountCode(String code) {
+        btnDiscountCode.setClickable(false);
+        btnDiscountCode.setImageResource(R.drawable.ic_shopping_cart_disabled);
+        codeWrapper.setVisibility(View.VISIBLE);
+        tvCode.setText(code);
     }
 
     @Override
-    public void showDiscountCode(String code) {
-        btnDiscountCode.setVisibility(View.GONE);
-        codeWrapper.setVisibility(View.VISIBLE);
-        tvCode.setText(code);
+    public void scrollToDiscount() {
+        codeWrapper.requestFocus();
     }
 
     //endregion

@@ -8,10 +8,9 @@ import android.nfc.NfcAdapter;
 /**
  * Created by dino on 05/01/16.
  */
-public class BluetoothHelper {
+public class ConnectivityHelper {
 
-
-    private BluetoothHelper() {
+    private ConnectivityHelper() {
 
     }
 

@@ -41,8 +41,6 @@ public class DiscountDetailsPresenterImpl implements DiscountDetailsPresenter {
 
             if (discount.isDiscountActivated()) {
                 view.showDiscountCode(discount.getCode());
-            } else {
-                view.showDiscountButton();
             }
         }
     }
@@ -63,6 +61,7 @@ public class DiscountDetailsPresenterImpl implements DiscountDetailsPresenter {
                     isCodeActivated = true;
                     discount.setCode(codeResponse.getCode());
                     view.showDiscountCode(codeResponse.getCode());
+                    view.scrollToDiscount();
                     view.hideProgress();
                     view.showMessage(StringUtils.getString(R.string.code_received));
                 } else {

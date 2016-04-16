@@ -1,35 +1,35 @@
 <resources>
     <string name="app_name">Shop app</string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_beacon">Set RSSI</string>
-    <string name="rssiLabel">RSSI: %1$s</string>
-    <string name="title_activity_shopping">Store</string>
-    <string name="title_activity_discount_details">Discount details</string>
-    <string name="discovered_discounts">Discovered discounts:</string>
-    <string name="productLbl">Product</string>
-    <string name="oldpriceLbl">Old price</string>p
-    <string name="newPriceLbl">New price</string>
-    <string name="discountLbl">Discount</string>
-    <string name="validUntilLbl">Valid to</string>
-    <string name="ok">OK</string>
-    <string name="exit">Exit</string>
-    <string name="main_screen_message">Prislonite mobilni uređaj uz oznaku na početku dućana i krenite u istraživanje popusta!</string>
-    <string name="main_screen_nfc_error">Za početak korištenja aplikacije upalite NFC senzor.</string>
-    <string name="bluetooth_error">Bluetooth je isključen, upalite ga da biste koristili aplikaciju</string>
-    <string name="bluetooth_turn_on">Turn on</string>
+    <string name="action_settings">Postavke</string>
+    <string name="title_activity_config">Postavke</string>
+    <string name="rssiLabel">%s [db]</string>
+    <string name="title_activity_shopping">Poslovnica</string>
+    <string name="title_activity_discount_details">Detalji popusta</string>
+    <string name="discovered_discounts">Otkriveni popusti:</string>
+    <string name="product">Proizvod</string>
+    <string name="old_price">Stara cijena</string>
+    <string name="new_price">Nova cijena</string>
+    <string name="discount">Popust</string>
+    <string name="valid_to">Vrijedi do</string>
+    <string name="ok">Uredu</string>
+    <string name="exit">Izađi</string>
+    <string name="main_screen_title">Dobrodošli</string>
+    <string name="main_screen_message">Prislonite mobilni uređaj uz NFC oznaku i započnite sa traženjem popusta. Kada dođete u blizinu artikla na popustu, isti će vam se pojaviti na listi popust. Sve što je onda potrebno je aktivirati popust i prikazati kod na blagajni! </string>
+    <string name="main_screen_nfc_error">Za početak korištenja aplikacije uključite NFC senzor.</string>
+    <string name="bluetooth_error">Bluetooth je isključen, uključite ga da biste koristili aplikaciju</string>
+    <string name="bluetooth_turn_on">Uključi</string>
     <string name="gimbal_api_key">b004f8c0-d82f-4809-8b0c-a3698e0b8d79</string>
-    <string name="without_bluetooth_app_doesnt_work">Bez bluetooth-a aplikacija ne radi...</string>
-    <string name="error">Error</string>
-    <string name="there_are_no_discounts_available">There are no discounts available.</string>
-    <string name="product">Product</string>
-    <string name="old_price">Old price</string>
-    <string name="new_price">New price</string>
-    <string name="discount">Discount</string>
-    <string name="valid_to">Valid to</string>
-    <string name="get_the_discount_code">Get the discount code</string>
-    <string name="discount_code">Discount code</string>
-    <string name="code_received">You received the code for this discount! Please show it to our cashier in order to claim the discount.</string>
-    <string name="shop_details">Store details</string>
+    <string name="without_bluetooth_app_doesnt_work">Bez Bluetooth-a aplikacija ne radi...</string>
+    <string name="error">Greška</string>
+    <string name="there_are_no_discounts_available">Nema dostupnih popusta.</string>
+    <string name="discount_code">Kod za popust</string>
+    <string name="code_received">Uspješno ste zaprimili kod za popust! Pokažite ga blagajniku kako bi ostvarili popust za navedeni artikal.</string>
+    <string name="shop_details">Informacije o poslovnici</string>
+    <string name="enable_nfc">Uključi NFC</string>
+    <string name="rssi_title">Postavite osjetljivost BLE senzora</string>
+    <string name="rssi_description">Postavite vrijednost u decibelima. Što je veća vrijednost to je veći domet senzora i veća mogućnost
+        pronalaska popusta.
+    </string>
+    <string name="telefon">Telefon</string>
+    <string name="adresa">Adresa</string>
 </resources>
