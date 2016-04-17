@@ -12,6 +12,8 @@ public interface ShoppingPresenter extends BasePresenter {
 
     void onCreated(Intent intent);
 
+    boolean areProtocolsEnabled();
+
     void getBeaconList();
 
     void onBeaconDiscovered(int rssi, BluetoothDevice device);
@@ -21,4 +23,5 @@ public interface ShoppingPresenter extends BasePresenter {
     void onCodeReceived(String code);
 
     StoreConfiguration getStoreConfiguration();
+
 }

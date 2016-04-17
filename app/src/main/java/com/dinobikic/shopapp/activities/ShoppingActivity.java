@@ -30,7 +30,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class ShoppingActivity extends BaseActivity implements ShoppingView {
+public  class ShoppingActivity extends BaseActivity implements ShoppingView {
 
     @Bind(R.id.tv_shop_title)
     TextView tvShopTitle;
@@ -130,6 +130,16 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
         }
     }
 
+    // region BaseView
+    @Override
+    public void onProtocolEnabled() {
+        if (presenter.areProtocolsEnabled()) {
+            presenter.getBeaconList();
+        }
+    }
+
+    //endregion
+
     // region ShoppingView
 
     @Override
@@ -148,7 +158,9 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
         tvDiscoveredBeacons.setVisibility(View.VISIBLE);
 
         bluetoothLeScanner = BluetoothAdapter.getDefaultAdapter().getBluetoothLeScanner();
-        bluetoothLeScanner.startScan(scanCallback);
+        if (bluetoothLeScanner != null) {
+            bluetoothLeScanner.startScan(scanCallback);
+        }
     }
 
     @Override
@@ -160,6 +172,11 @@ public class ShoppingActivity extends BaseActivity implements ShoppingView {
     public void navigateToDiscountDetails(Discount discount) {
         Intent intent = DiscountDetailsActivity.buildIntent(this, discount);
         startActivityForResult(intent, Constants.REQUEST_CODE_DISCOUNT);
+    }
+
+    @Override
+    public void requestEnableProtocol(String message) {
+        showEnableProtocol(message);
     }
 
     //endregion

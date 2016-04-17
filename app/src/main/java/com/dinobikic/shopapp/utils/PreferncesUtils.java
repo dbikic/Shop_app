@@ -13,7 +13,7 @@ public class PreferncesUtils {
 
     public static final String RSSI_KEY = "rssiKey";
 
-    public static final int DEFAULT_RSSI_VALUE = -50;
+    public static final int DEFAULT_RSSI_VALUE = -100;
 
     private static SharedPreferences prefs;
 

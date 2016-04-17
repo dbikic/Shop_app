@@ -11,7 +11,9 @@ public interface BaseView {
 
     void showMessage(String message);
 
-    void showEnableFeature(String message);
+    void showEnableProtocol(String message);
 
     void finishActivity();
+
+    void onProtocolEnabled();
 }

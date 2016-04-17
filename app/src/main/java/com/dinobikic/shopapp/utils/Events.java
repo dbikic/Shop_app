@@ -5,11 +5,11 @@ package com.dinobikic.shopapp.utils;
  */
 public class Events {
 
-    public static class BluetoothState {
+    public static class EnableProtocol {
 
         private String state;
 
-        public BluetoothState(String state) {
+        public EnableProtocol(String state) {
             this.state = state;
         }
 

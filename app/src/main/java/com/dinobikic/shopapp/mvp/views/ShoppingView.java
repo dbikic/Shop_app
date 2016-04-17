@@ -15,4 +15,5 @@ public interface ShoppingView extends BaseView {
 
     void navigateToDiscountDetails(Discount discount);
 
+    void requestEnableProtocol(String message);
 }

@@ -62,11 +62,6 @@ public class MainActivity extends BaseActivity implements MainView {
         }
     }
 
-    @OnClick(R.id.tvMessage)
-    public void goToShop() {
-        startActivity(new Intent(this, ShoppingActivity.class));
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);

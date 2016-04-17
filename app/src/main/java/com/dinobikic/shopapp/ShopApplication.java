@@ -27,7 +27,7 @@ public class ShopApplication extends Application {
             if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
                 final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1);
                 if (state == BluetoothAdapter.STATE_OFF) {
-                    EventBus.getDefault().post(new Events.BluetoothState(getString(R.string.bluetooth_error)));
+                    EventBus.getDefault().post(new Events.EnableProtocol(getString(R.string.bluetooth_error)));
                 }
             }
         }

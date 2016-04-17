@@ -17,6 +17,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <activity
             android:name="com.dinobikic.shopapp.activities.MainActivity"
             android:theme="@style/MojaTema"
@@ -31,16 +32,6 @@
             android:label="@string/title_activity_config"
             android:screenOrientation="portrait"
             android:theme="@style/MojaTema" >
-            <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data
-                    android:host="dino"
-                    android:pathPrefix="/config"
-                    android:scheme="dinonfc" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.dinobikic.shopapp.activities.ShoppingActivity"
@@ -49,9 +40,7 @@
             android:theme="@style/MojaTema" >
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data
                     android:host="dino"
                     android:pathPrefix="/shop"
