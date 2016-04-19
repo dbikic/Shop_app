@@ -23,13 +23,11 @@ import java.util.ArrayList;
  */
 public class ShoppingPresenterImpl implements ShoppingPresenter {
 
-    public static final int STORE_ID_LOCATION = 20;
-
     ShoppingView view;
 
     ShoppingInteractor interactor;
 
-    private String shopName;
+    private String shopId;
 
     StoreConfiguration storeConfiguration;
 
@@ -52,7 +50,7 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
 
         // dinonfc://dino/shop/X
         if (intent.getDataString() != null) {
-            shopName = intent.getDataString().substring(STORE_ID_LOCATION);
+            shopId = StringUtils.getShopId(intent.getDataString());
             maxRssi = new ConfigInteractorImpl().getRssi() * -1;
         } else {
             view.showMessage(ShopApplication.getInstance().getString(R.string.nfc_error));
@@ -80,7 +78,7 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
     @Override
     public void getStoreInfo() {
         view.showProgress();
-        interactor.getStoreConfiguration(shopName, new StoreCallback() {
+        interactor.getStoreConfiguration(shopId, new StoreCallback() {
             @Override
             public void onError() {
                 view.hideProgress();

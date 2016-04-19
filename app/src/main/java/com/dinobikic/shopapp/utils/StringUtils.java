@@ -13,6 +13,8 @@ import java.util.Locale;
  */
 public class StringUtils {
 
+    public static final int STORE_ID_LOCATION = 20;
+
     private StringUtils() {
     }
 
@@ -45,5 +47,9 @@ public class StringUtils {
         } else {
             return String.format(Locale.getDefault(), ShopApplication.getInstance().getString(R.string.rssiLabel), String.valueOf(-rssiValue));
         }
+    }
+
+    public static String getShopId(String dataString) {
+        return dataString.substring(STORE_ID_LOCATION);
     }
 }

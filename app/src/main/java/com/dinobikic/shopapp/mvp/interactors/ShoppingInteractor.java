@@ -7,5 +7,5 @@ import com.dinobikic.shopapp.interfaces.StoreCallback;
  */
 public interface ShoppingInteractor extends BaseInteractor {
 
-    void getStoreConfiguration(String shopName, StoreCallback storeCallback);
+    void getStoreConfiguration(String shopId, StoreCallback storeCallback);
 }

@@ -27,8 +27,8 @@ public class ShoppingInteractorImpl implements ShoppingInteractor {
     StoreCallback storeCallback;
 
     @Override
-    public void getStoreConfiguration(String shopName, StoreCallback storeCallback) {
-        this.shopId = shopName;
+    public void getStoreConfiguration(String shopId, StoreCallback storeCallback) {
+        this.shopId = shopId;
         this.storeCallback = storeCallback;
         TelephonyManager telephonyManager = (TelephonyManager) ShopApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
         this.deviceId = telephonyManager.getDeviceId();
