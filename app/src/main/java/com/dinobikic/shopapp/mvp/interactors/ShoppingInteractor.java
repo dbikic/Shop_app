@@ -1,11 +1,11 @@
 package com.dinobikic.shopapp.mvp.interactors;
 
-import com.dinobikic.shopapp.interfaces.BeaconsCallback;
+import com.dinobikic.shopapp.interfaces.StoreCallback;
 
 /**
  * Created by dino on 23/03/16.
  */
 public interface ShoppingInteractor extends BaseInteractor {
 
-    void getBeacons(String shopName, BeaconsCallback beaconsCallback);
+    void getStoreConfiguration(String shopName, StoreCallback storeCallback);
 }

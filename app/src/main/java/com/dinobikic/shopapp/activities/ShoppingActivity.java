@@ -119,7 +119,7 @@ public  class ShoppingActivity extends BaseActivity implements ShoppingView {
 
         if (requestCode == Constants.REQUEST_ENABLE_BT) {
             if (resultCode == RESULT_OK) {
-                presenter.getBeaconList();
+                presenter.getStoreInfo();
             } else {
                 showMessage(getString(R.string.without_bluetooth_app_doesnt_work));
             }
@@ -134,7 +134,7 @@ public  class ShoppingActivity extends BaseActivity implements ShoppingView {
     @Override
     public void onProtocolEnabled() {
         if (presenter.areProtocolsEnabled()) {
-            presenter.getBeaconList();
+            presenter.getStoreInfo();
         }
     }
 

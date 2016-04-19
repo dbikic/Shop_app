@@ -3,7 +3,7 @@ package com.dinobikic.shopapp.mvp.interactors.impl;
 import com.google.gson.Gson;
 
 import com.dinobikic.shopapp.ShopApplication;
-import com.dinobikic.shopapp.interfaces.BeaconsCallback;
+import com.dinobikic.shopapp.interfaces.StoreCallback;
 import com.dinobikic.shopapp.models.StoreConfiguration;
 import com.dinobikic.shopapp.mvp.interactors.ShoppingInteractor;
 import com.dinobikic.shopapp.utils.Constants;
@@ -24,12 +24,12 @@ public class ShoppingInteractorImpl implements ShoppingInteractor {
 
     String deviceId;
 
-    BeaconsCallback beaconsCallback;
+    StoreCallback storeCallback;
 
     @Override
-    public void getBeacons(String shopName, BeaconsCallback beaconsCallback) {
+    public void getStoreConfiguration(String shopName, StoreCallback storeCallback) {
         this.shopId = shopName;
-        this.beaconsCallback = beaconsCallback;
+        this.storeCallback = storeCallback;
         TelephonyManager telephonyManager = (TelephonyManager) ShopApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
         this.deviceId = telephonyManager.getDeviceId();
 
@@ -64,9 +64,9 @@ public class ShoppingInteractorImpl implements ShoppingInteractor {
         @Override
         protected void onPostExecute(Void aVoid) {
             if (storeConfiguration == null) {
-                beaconsCallback.onError();
+                storeCallback.onError();
             } else {
-                beaconsCallback.onSuccess(storeConfiguration);
+                storeCallback.onSuccess(storeConfiguration);
             }
         }
     }

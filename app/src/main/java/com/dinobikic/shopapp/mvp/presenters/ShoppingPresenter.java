@@ -14,7 +14,7 @@ public interface ShoppingPresenter extends BasePresenter {
 
     boolean areProtocolsEnabled();
 
-    void getBeaconList();
+    void getStoreInfo();
 
     void onBeaconDiscovered(int rssi, BluetoothDevice device);
 

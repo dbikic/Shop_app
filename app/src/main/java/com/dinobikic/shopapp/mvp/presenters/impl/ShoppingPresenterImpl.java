@@ -2,7 +2,7 @@ package com.dinobikic.shopapp.mvp.presenters.impl;
 
 import com.dinobikic.shopapp.R;
 import com.dinobikic.shopapp.ShopApplication;
-import com.dinobikic.shopapp.interfaces.BeaconsCallback;
+import com.dinobikic.shopapp.interfaces.StoreCallback;
 import com.dinobikic.shopapp.models.Discount;
 import com.dinobikic.shopapp.models.StoreConfiguration;
 import com.dinobikic.shopapp.mvp.interactors.ShoppingInteractor;
@@ -59,7 +59,7 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
         }
 
         if (areProtocolsEnabled()) {
-            getBeaconList();
+            getStoreInfo();
         }
     }
 
@@ -78,9 +78,9 @@ public class ShoppingPresenterImpl implements ShoppingPresenter {
     }
 
     @Override
-    public void getBeaconList() {
+    public void getStoreInfo() {
         view.showProgress();
-        interactor.getBeacons(shopName, new BeaconsCallback() {
+        interactor.getStoreConfiguration(shopName, new StoreCallback() {
             @Override
             public void onError() {
                 view.hideProgress();
