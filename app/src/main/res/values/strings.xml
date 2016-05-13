@@ -2,7 +2,7 @@
     <string name="app_name">Shop app</string>
     <string name="action_settings">Postavke</string>
     <string name="title_activity_config">Postavke</string>
-    <string name="rssiLabel">%s [db]</string>
+    <string name="rssiLabel">%s [dB]</string>
     <string name="title_activity_shopping">Poslovnica</string>
     <string name="title_activity_discount_details">Detalji popusta</string>
     <string name="discovered_discounts">Otkriveni popusti:</string>
@@ -14,7 +14,7 @@
     <string name="ok">Uredu</string>
     <string name="exit">Izađi</string>
     <string name="main_screen_title">Dobrodošli</string>
-    <string name="main_screen_message">Prislonite mobilni uređaj uz NFC oznaku i započnite sa traženjem popusta. Kada dođete u blizinu artikla na popustu, isti će vam se pojaviti na listi popust. Sve što je onda potrebno je aktivirati popust i prikazati kod na blagajni! </string>
+    <string name="main_screen_message">Prislonite mobilni uređaj uz NFC oznaku i započnite sa traženjem popusta. Kada se približite artiklu na popustu, isti će vam se pojaviti na listi popust. Sve što je onda potrebno jest aktivirati popust i prikazati kod na blagajni! </string>
     <string name="main_screen_nfc_error">Za početak korištenja aplikacije uključite NFC senzor.</string>
     <string name="bluetooth_error">Bluetooth je isključen, uključite ga da biste koristili aplikaciju</string>
     <string name="wifi_error">Internetska konekcija je potrebna za korištenje aplikacije</string>
@@ -28,7 +28,7 @@
     <string name="shop_details">Informacije o poslovnici</string>
     <string name="enable_nfc">Uključi NFC</string>
     <string name="rssi_title">Postavite osjetljivost BLE senzora</string>
-    <string name="rssi_description">Postavite vrijednost u decibelima. Što je veća vrijednost to je veći domet senzora i veća mogućnost
+    <string name="rssi_description">Postavite vrijednost u decibelima. Što je klizač više desno, to je veći domet senzora i veća mogućnost
         pronalaska popusta.
     </string>
     <string name="telefon">Telefon</string>
